@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Glow-Sword Quest v9.1</title>
+    <style>
+        /* --- CSS Base & Variables --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e0f7fa 0%, #fce4ec 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --primary-color: #b39ddb; 
+            --accent-color: #ff80ab; 
+            --success-color: #a5d6a7;
+            --text-main: #4a4a4a;
+            --gold: #ffd700;
+        }
+
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+
+        .background-layer { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; transition: opacity 0.3s ease; }
+        .overlay { position: absolute; inset: 0; z-index: 1; background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%); pointer-events: none;}
+
+        #app-container { position: relative; z-index: 2; width: 100%; max-width: 500px; height: 100vh; margin: 0 auto; display: flex; flex-direction: column; box-sizing: border-box; }
+
+        .screen { display: none; flex-direction: column; height: 100%; padding: 15px; animation: fadeIn 0.5s; overflow-y: auto; }
+        .screen.active { display: flex; }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; flex-shrink: 0; }
+        .score-badge { background: white; color: var(--accent-color); padding: 8px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 100px; text-align: center;}
+        .nav-btn { background: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        .lobby-hero { text-align: center; margin-top: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+        .warrior-img { 
+            width: 180px; height: auto; 
+            animation: float 3s ease-in-out infinite; 
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #screen-lobby .warrior-img {
+            width: 250px !important;
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .menu-grid { display: grid; gap: 15px; margin-top: 30px; }
+        .big-btn { background: white; border: 2px solid var(--primary-color); padding: 20px; border-radius: 20px; font-size: 1.2rem; font-weight: bold; color: var(--text-main); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .big-btn:active { transform: scale(0.98); background: var(--primary-color); color: white; }
+
+        .game-area { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        .game-center-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; }
+
+        .progress-track { width: 100%; height: 10px; background: rgba(255,255,255,0.3); border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent-color); width: 0%; transition: width 0.3s; }
+
+        .instruction-bubble { background: var(--card-bg); padding: 15px 25px; border-radius: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); width: 90%; max-width: 350px; }
+        .choices-area { display: grid; gap: 12px; width: 100%; max-width: 350px; }
+        .choice-card { 
+            background: white; padding: 15px; border-radius: 15px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            cursor: pointer; border: 3px solid transparent; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.2s;
+            touch-action: manipulation;
+        }
+        .eng-word { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); }
+        .he-word { font-size: 0.9rem; color: #888; }
+        .hidden-trans { opacity: 0; }
+        .audio-icon { background: #f0f4c3; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none; }
+
+        .map-path { position: relative; flex-grow: 1; margin: 20px 0; background-image: url('https://cdn-icons-png.flaticon.com/512/744/744922.png'); background-repeat: no-repeat; background-position: bottom center; background-size: contain; }
+        .level-node-map { position: absolute; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 5; transition: all 0.3s; }
+        .level-node-map.locked { background: #ccc; opacity: 0.5; }
+        .level-node-map.unlocked { background: linear-gradient(135deg, #b39ddb, #ff80ab); }
+        .level-tooltip { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: white; padding: 5px 10px; border-radius: 10px; font-size: 0.7rem; white-space: nowrap; visibility: hidden; }
+        .level-node-map:hover .level-tooltip { visibility: visible; }
+
+        .forest-canvas { flex-grow: 1; position: relative; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%); border: 3px dashed rgba(255,255,255,0.5); border-radius: 20px; margin: 10px 0; touch-action: none; }
+        .placed-item { position: absolute; font-size: 50px; cursor: grab; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); animation: popIn 0.3s ease; user-select: none; }
+        @keyframes popIn { from{transform:scale(0);} to{transform:scale(1);} }
+        .inventory-bar { background: white; border-radius: 15px; padding: 10px; display: flex; gap: 10px; overflow-x: auto; max-height: 100px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); }
+        .inventory-slot { min-width: 60px; height: 60px; background: #f3e5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .inventory-slot.selected { border-color: var(--accent-color); transform: scale(1.1); }
+
+        .vocab-list { 
+            display: grid; gap: 10px; padding-bottom: 20px; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        }
+        .vocab-card {
+            background: white; border-radius: 15px; padding: 15px;
+            text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer; transition: 0.2s;
+        }
+        .vocab-card:hover { transform: translateY(-3px); }
+        .vocab-en { font-weight: bold; color: var(--primary-color); font-size: 1.1rem; }
+        .vocab-he { color: #888; font-size: 0.9rem; margin-top: 5px; }
+
+        /* ✅ FIXED MODAL STYLES */
+        .success-modal {
+            position: fixed; inset: 0; z-index: 9999 !important; /* Higher Z-Index */
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center;
+        }
+
+        .modal-box {
+            background: white; padding: 30px; border-radius: 25px;
+            text-align: center; width: 85%; max-width: 350px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden;
+            pointer-events: auto; /* Ensure clicks work inside modal */
+        }
+
+        @keyframes popIn { from{transform:scale(0.8);} to{transform:scale(1);} }
+
+        .confetti-container {
+            position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute; width: 10px; height: 10px;
+            animation: fall 3s linear forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+        }
+
+        .action-btn {
+            display: block; width: 100%; margin: 10px 0; padding: 12px;
+            border: none; border-radius: 12px; font-size: 1.1rem; cursor: pointer;
+            font-weight: bold; transition: 0.2s;
+        }
+        .btn-primary { background: var(--accent-color); color: white; }
+        .btn-secondary { background: var(--primary-color); color: white; }
+        .btn-outline { background: white; border: 2px solid var(--text-main); color: var(--text-main); }
+        .action-btn:hover { transform: scale(1.02); }
+
+        .shop-category-title { 
+            background: rgba(255,255,255,0.7); padding: 10px; border-radius: 10px; 
+            margin: 20px 0 10px 0; font-weight: bold; color: var(--primary-color);
+        }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding-bottom: 20px; }
+        .shop-item { 
+            background: white; border-radius: 15px; overflow: hidden; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column;
+            position: relative;
+        }
+        .item-image-placeholder {
+            height: 100px; background: #f3e5f5; display: flex; align-items: center; justify-content: center; font-size: 40px;
+        }
+        .item-info { padding: 10px; text-align: center; }
+        .item-name-en { font-weight: bold; font-size: 0.9rem; color: var(--accent-color); }
+        .item-price { background: var(--gold); color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; display: inline-block; margin-top: 5px;}
+
+        .owned-badge {
+            position: absolute; top: 5px; right: 5px; background: var(--success-color); color: white;
+            padding: 2px 6px; border-radius: 5px; font-size: 0.7rem; font-weight: bold;
+        }
+
+        /* Voice Animation Styles */
+        .listening {
+            animation: pulse-red 1.5s infinite;
+            background-color: #ef9a9a !important;
+            color: white !important;
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 154, 154, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 154, 154, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 154, 154, 0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-layer" id="main-background"></div>
+<div class="overlay"></div>
+
+<div id="app-container">
+
+    <div id="screen-lobby" class="screen active" data-bg-type="dynamic">
+        <div class="top-bar">
+            <button class="nav-btn" onclick="showScreen('screen-settings')">⚙️</button>
+            <div class="score-badge">✨ <span id="global-crystals">0</span></div>
+        </div>
+
+        <div class="lobby-hero">
+            <img src="Princes1-bg.png" alt="Warrior" class="warrior-img">
+            <h2 style="color:white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">היי לוחמת!</h2>
+            <p style="color:white;">איפה נרצה להמשיך היום?</p>
+        </div>
+
+        <div class="menu-grid">
+            <button class="big-btn" onclick="openMap()">🗺️ מפת השלבים</button>
+            <button class="big-btn" onclick="showScreen('screen-shop')">🏪 חנות הקסמים</button>
+            <button class="big-btn" onclick="showScreen('screen-vocab')">📖 המילון שלי</button>
+            <button class="big-btn" onclick="showScreen('screen-forest')">🏡 היער שלי</button>
+        </div>
+    </div>
+
+    <div id="screen-game" class="screen" data-bg="מסך 1.png">
+        <div class="top-bar">
+            <button class="nav-btn" onclick="pauseGame()">⏸️ עצירה</button>
+            <div class="score-badge">✨ <span id="game-crystals">0</span></div>
+        </div>
+
+        <div class="game-area">
+            <div class="progress-track"><div class="progress-fill" id="session-progress"></div></div>
+
+            <div class="game-center-wrapper">
+                <img src="Princes1-bg.png" alt="Warrior" class="warrior-img" style="width: 150px;">
+                <div class="instruction-bubble" id="task-text">טוען...</div>
+
+                <div class="choices-area" id="options-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-map" class="screen" data-bg="מסך 2.png">
+        <div class="top-bar">
+            <button class="nav-btn" onclick="showScreen('screen-lobby')">🔙</button>
+            <h3 style="margin:0;">מפת ההרפתקאות 🌲</h3>
+        </div>
+        <div class="map-path" id="visual-map"></div>
+        <div style="text-align:center; color:#fff; margin-top:10px;">
+            לחצי על עיגול כדי להתחיל את השלב!
+        </div>
+    </div>
+
+    <div id="screen-shop" class="screen" data-bg="מסך 3.png">
+        <div class="top-bar">
+            <button class="nav-btn" onclick="showScreen('screen-lobby')">🔙</button>
+            <h3 style="margin:0;">חנות הקסמים 🛍️</h3>
+        </div>
+        <div id="shop-container" style="flex-grow:1; overflow-y:auto; padding-bottom:20px;"></div>
+    </div>
+
+    <div id="screen-vocab" class="screen" data-bg="מסך 4.png">
+        <div class="top-bar">
+            <button class="nav-btn" onclick="showScreen('screen-lobby')">🔙</button>
+            <h3 style="margin:0;">המילון שלי 📖</h3>
+        </div>
+        <div style="padding: 10px; background: white; border-radius: 15px; margin-bottom: 15px;">
+            <small style="color:#888;">לחצי על כל מילה לשמוע אותה באנגלית!</small>
+        </div>
+        <div id="vocab-list-container" class="vocab-list"></div>
+    </div>
+
+    <div id="screen-forest" class="screen" data-bg="מסך 1.png">
+        <div class="top-bar">
+            <button class="nav-btn" onclick="showScreen('screen-lobby')">🔙</button>
+            <h3 style="margin:0;">היער שלי 🌳</h3>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; justify-content:center;">
+            <small style="color:white;">בחר פריט למטה והנח אותו ביער:</small>
+            <button class="clear-forest-btn" onclick="clearForest()" style="background:#ef9a9a; color:white; border:none; padding:8px 15px; border-radius:10px; font-size:0.9rem; cursor:pointer;">🗑️ נקה הכל</button>
+        </div>
+
+        <div class="forest-canvas" id="forest-canvas" onclick="placeItem(event)"></div>
+        <div class="inventory-bar" id="inventory-bar"></div>
+    </div>
+
+    <div id="screen-settings" class="screen" data-bg="תפריט 2.png">
+        <div class="top-bar">
+            <button class="nav-btn" onclick="showScreen('screen-lobby')">🔙</button>
+            <h3 style="margin:0;">הגדרות</h3>
+        </div>
+        <div style="background:white; padding:20px; border-radius:20px; margin-top:20px;">
+            <label style="display:block; margin-bottom:15px;">
+                <input type="checkbox" id="trans-check" checked onchange="updateTranslation()"> הצג תרגום לעברית
+            </label>
+            <hr>
+            <button onclick="resetProgress()" style="background:#ef9a9a; color:white; border:none; padding:10px; width:100%; border-radius:10px;">איפוס התקדמות</button>
+        </div>
+    </div>
+
+</div>
+
+<div id="level-complete-modal" class="success-modal" onclick="event.stopPropagation()">
+    <div class="modal-box">
+        <div class="confetti-container" id="confetti-wrapper"></div>
+        <div style="font-size:60px; margin-bottom:10px;">⭐</div>
+        <h2 style="color:var(--accent-color); margin:0;">כל הכבוד!</h2>
+        <p style="color:#666;">סיימת את שלב מספר <span id="completed-level-num">1</span></p>
+        <p style="color:#666;">זכית ב-<b>50 גבישי אור!</b></p>
+
+        <button class="action-btn btn-primary" onclick="continueToNextLevel()">➡️ המשך לשלב הבא</button>
+        <button class="action-btn btn-secondary" onclick="goHomeFromSuccess()">🏠 חזור לבית</button>
+    </div>
+</div>
+
+<div id="pause-modal" class="success-modal" onclick="event.stopPropagation()">
+    <div class="modal-box">
+        <div style="font-size:60px; margin-bottom:10px;">⏸️</div>
+        <h2 style="color:var(--primary-color); margin:0;">המשחק מושהה</h2>
+        <p style="color:#666;">התקדמות שלך נשמרה אוטומטית 💾</p>
+
+        <button class="action-btn btn-primary" onclick="resumeGame()">▶️ המשיכי מכאן</button>
+        <button class="action-btn btn-outline" onclick="quitToLobby()">🏠 חזור לבית</button>
+    </div>
+</div>
+
+<!-- ✅ FIXED MODAL - Now has proper structure -->
+<div id="purchase-modal" class="success-modal" onclick="if(event.target === this) closePurchaseModal()">
+    <div class="modal-box">
+        <!-- Content will be injected here by JS -->
+        <h3 style="color:var(--accent-color)">אתגר קנייה!</h3>
+        <p>כדי לקנות, עלייך לדעת את שם האנגלי שלו.</p>
+        <button onclick="closePurchaseModal()" style="background:#ccc; border:none; padding:8px 20px; border-radius:10px;">ביטול</button>
+    </div>
+</div>
+
+<script>
+    // --- GLOBAL ERROR HANDLING ---
+    window.onerror = function(msg, url, lineNo, columnNo, error) {
+        console.error("❌ Error caught:", msg);
+        return false;
+    };
+
+    const backgrounds = {
+        lobbyDay: "תפריט 1.png",     
+        lobbyNight: "תפריט 2.png",   
+        game: "מסך 1.png",
+        map: "מסך 2.png",
+        shop: "מסך 3.png",
+        vocab: "מסך 4.png",
+        forest: "מסך 1.png",
+        settings: "תפריט 2.png"
+    };
+
+    function setLobbyBackground() {
+        try {
+            const now = new Date();
+            const hour = now.getHours();
+            const isDayTime = hour >= 6 && hour < 18;
+            const bgLayer = document.getElementById('main-background');
+            if(bgLayer) {
+                const backgroundImage = isDayTime ? backgrounds.lobbyDay : backgrounds.lobbyNight;
+                bgLayer.style.backgroundImage = `url('${backgroundImage}')`;
+            }
+        } catch(e) { console.error("❌ Error setting lobby background:", e); }
+    }
+
+    function setBackground(screenId) {
+        try {
+            const bgLayer = document.getElementById('main-background');
+            if(screenId === 'lobby') { setLobbyBackground(); return; }
+            if(bgLayer && backgrounds[screenId]) {
+                bgLayer.style.backgroundImage = `url('${backgrounds[screenId]}')`;
+            } else {
+                const activeScreen = document.querySelector('.screen.active');
+                if(activeScreen && activeScreen.dataset.bg) {
+                    bgLayer.style.backgroundImage = `url('${activeScreen.dataset.bg}')`;
+                }
+            }
+        } catch(e) { console.error("Background change failed:", e); }
+    }
+
+    let bestVoice = null;
+    let speechRecog = null; 
+
+    async function initTTS() {
+        try {
+            if ('speechSynthesis' in window) {
+                await new Promise(resolve => {
+                    if (window.speechSynthesis.getVoices().length > 0) resolve();
+                    else window.speechSynthesis.onvoiceschanged = () => resolve();
+                });
+                const voices = window.speechSynthesis.getVoices();
+                const englishVoices = voices.filter(v => v.lang.includes('en'));
+                bestVoice = englishVoices.find(v => 
+                    v.name.includes('Google US English') || v.name.includes('Zira')) || englishVoices[0];
+            }
+
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                speechRecog = new SpeechRecognition();
+                speechRecog.continuous = false;
+                speechRecog.interimResults = false;
+                speechRecog.maxAlternatives = 1;
+                speechRecog.lang = 'en-US';
+
+                speechRecog.onresult = handleSpeechResult;
+                speechRecog.onerror = handleSpeechError;
+                speechRecog.onend = stopListeningVisual;
+            } else {
+                console.warn("⚠️ Speech Recognition not supported on this browser.");
+            }
+
+        } catch(e) { console.error("❌ TTS initialization failed:", e); }
+    }
+
+    function speak(text) {
+        try {
+            if (!text || !('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            if(bestVoice) u.voice = bestVoice;
+            u.lang = 'en-US';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
+        } catch(e) { console.error("Speech error:", e); }
+    }
+
+    // --- SPEECH RECOGNITION LOGIC ---
+    let currentTargetWord = ""; 
+
+    function startListening(targetWord, successCallback, failCallback) {
+        if(!speechRecog) {
+            alert("מצטערת, המכשיר לא תומך בזיהוי דיבור כרגע.\nאנא ודאי שהאתר נפתח דרך HTTPS או localhost.");
+            return;
+        }
+
+        currentTargetWord = targetWord;
+        showListeningVisual(true);
+
+        try {
+            speechRecog.start();
+        } catch(e) {
+            console.log("Recog might be busy");
+        }
+
+        window._currentPurchaseSuccess = successCallback;
+        window._currentPurchaseFail = failCallback;
+    }
+
+    function handleSpeechResult(event) {
+        const transcript = event.results[0][0].transcript.trim().toLowerCase();
+        const target = currentTargetWord.toLowerCase();
+
+        showListeningVisual(false);
+
+        const cleanTranscript = transcript.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+
+        if(cleanTranscript.includes(target) || target.includes(cleanTranscript)) {
+            speak("Perfect! " + target);
+            if(window._currentPurchaseSuccess) window._currentPurchaseSuccess();
+        } else {
+            speak(`Not quite. Try saying "${target}" again.`);
+            setTimeout(() => {
+                 if(confirm("נסי שוב?")) {
+                     startListening(currentTargetWord, window._currentPurchaseSuccess, window._currentPurchaseFail);
+                 } else {
+                     closePurchaseModal();
+                 }
+            }, 500);
+        }
+    }
+
+    function handleSpeechError(event) {
+        showListeningVisual(false);
+        console.error("Speech Error", event.error);
+        if(event.error === 'not-allowed') {
+            alert("אנא ודאי שהמיקרופון מורשה בדפדפן כדי לקנות פריטים!");
+        } else {
+            alert("לא שמעתי אותך טוב. נסי שוב.");
+        }
+    }
+
+    function showListeningVisual(isActive) {
+        const micBtn = document.getElementById('voice-mic-btn');
+        if(micBtn) {
+            if(isActive) {
+                micBtn.classList.add('listening');
+                micBtn.innerHTML = '🎙️ מקשיבה...';
+            } else {
+                micBtn.classList.remove('listening');
+                micBtn.innerHTML = '🔊 הגידי את המילה';
+            }
+        }
+    }
+
+    function stopListeningVisual() {
+         const micBtn = document.getElementById('voice-mic-btn');
+         if(micBtn && micBtn.classList.contains('listening')) {
+             micBtn.classList.remove('listening');
+             micBtn.innerHTML = '🔊 הגידי את המילה';
+         }
+    }
+
+    const vocabularyBank = {
+        level1: [
+            { en: "PLAY", he: "שחק", cat: "menu" }, { en: "START", he: "התחל", cat: "menu" }, 
+            { en: "STOP", he: "עצור", cat: "menu" }, { en: "PAUSE", he: "השהה", cat: "menu" }, 
+            { en: "LEVEL", he: "רמה", cat: "menu" }, { en: "OPTIONS", he: "אפשרויות", cat: "menu" }, 
+            { en: "SETTINGS", he: "הגדרות", cat: "menu" }, { en: "EXIT", he: "יציאה", cat: "menu" }, 
+            { en: "SAVE", he: "שמירה", cat: "menu" }, { en: "LOAD", he: "טעינה", cat: "menu" }, 
+            { en: "WIN", he: "ניצחון", cat: "menu" }, { en: "LOSE", he: "הפסד", cat: "menu" }, 
+            { en: "SCORE", he: "ציון", cat: "menu" }, { en: "MENU", he: "תפריט", cat: "menu" }, 
+            { en: "HELP", he: "עזרה", cat: "menu" },
+            { en: "YES", he: "כן", cat: "daily" }, { en: "NO", he: "לא", cat: "daily" }, 
+            { en: "HELLO", he: "שלום", cat: "daily" }, { en: "GOODBYE", he: "להתראות", cat: "daily" }, 
+            { en: "PLEASE", he: "בבקשה", cat: "daily" }, { en: "THANKS", he: "תודה", cat: "daily" }, 
+            { en: "SORRY", he: "מצטער/ת", cat: "daily" }, { en: "BIG", he: "גדול", cat: "daily" }, 
+            { en: "SMALL", he: "קטן", cat: "daily" }, { en: "GOOD", he: "טוב", cat: "daily" }, 
+            { en: "BAD", he: "רע", cat: "daily" }, { en: "FAST", he: "מהיר", cat: "daily" }, 
+            { en: "SLOW", he: "איטי", cat: "daily" }, { en: "HOT", he: "חם", cat: "daily" }, 
+            { en: "COLD", he: "קר", cat: "daily" }, { en: "HAPPY", he: "שמח", cat: "daily" }, 
+            { en: "SAD", he: "עצוב", cat: "daily" }, { en: "SUN", he: "שמש", cat: "daily" }, 
+            { en: "MOON", he: "ירח", cat: "daily" }, { en: "WATER", he: "מים", cat: "daily" },
+            { en: "ONE", he: "אחד", cat: "numbers" }, { en: "TWO", he: "שניים", cat: "numbers" }, 
+            { en: "THREE", he: "שלושה", cat: "numbers" }, { en: "FOUR", he: "ארבעה", cat: "numbers" }, 
+            { en: "FIVE", he: "חמישה", cat: "numbers" }, { en: "RED", he: "אדום", cat: "colors" }, 
+            { en: "BLUE", he: "כחול", cat: "colors" }, { en: "GREEN", he: "ירוק", cat: "colors" }, 
+            { en: "YELLOW", he: "צהוב", cat: "colors" }, { en: "WHITE", he: "לבן", cat: "colors" }
+        ],
+        level2: [
+            { en: "HOUSE", he: "בית", cat: "home" }, { en: "DOOR", he: "דלת", cat: "home" }, 
+            { en: "WINDOW", he: "חלון", cat: "home" }, { en: "BED", he: "מיטה", cat: "home" }, 
+            { en: "TABLE", he: "שולחן", cat: "home" }, { en: "CHAIR", he: "כיסא", cat: "home" }, 
+            { en: "COMPUTER", he: "מחשב", cat: "home" }, { en: "PHONE", he: "טלפון", cat: "home" }, 
+            { en: "BOOK", he: "ספר", cat: "home" }, { en: "PEN", he: "עט", cat: "home" }, 
+            { en: "BAG", he: "תיק", cat: "home" }, { en: "CLOTHES", he: "בגדים", cat: "home" }, 
+            { en: "SHOES", he: "נעליים", cat: "home" }, { en: "SHIRT", he: "חולצה", cat: "home" }, 
+            { en: "HAT", he: "כובע", cat: "home" }, { en: "FOOD", he: "אוכל", cat: "home" }, 
+            { en: "BREAD", he: "לחם", cat: "home" }, { en: "APPLE", he: "תפוח", cat: "home" }, 
+            { en: "MILK", he: "חלב", cat: "home" }, { en: "JUICE", he: "מיץ", cat: "home" },
+            { en: "TREE", he: "עץ", cat: "nature" }, { en: "FLOWER", he: "פרח", cat: "nature" }, 
+            { en: "LEAF", he: "עלה", cat: "nature" }, { en: "GRASS", he: "דשא", cat: "nature" }, 
+            { en: "FOREST", he: "יער", cat: "nature" }, { en: "SKY", he: "שמיים", cat: "nature" }, 
+            { en: "CLOUD", he: "ענן", cat: "nature" }, { en: "RAIN", he: "גשם", cat: "nature" }, 
+            { en: "SNOW", he: "שלג", cat: "nature" }, { en: "STONE", he: "אבן", cat: "nature" }, 
+            { en: "RIVER", he: "נהר", cat: "nature" }, { en: "ANIMAL", he: "חייה", cat: "nature" }, 
+            { en: "DOG", he: "כלב", cat: "nature" }, { en: "CAT", he: "חתול", cat: "nature" }, 
+            { en: "BIRD", he: "ציפור", cat: "nature" }, { en: "FISH", he: "דג", cat: "nature" }, 
+            { en: "HORSE", he: "סוס", cat: "nature" }, { en: "LION", he: "אריה", cat: "nature" }, 
+            { en: "BEAR", he: "דוב", cat: "nature" }, { en: "WOLF", he: "זאב", cat: "nature" },
+            { en: "BODY", he: "גוף", cat: "body" }, { en: "HEAD", he: "ראש", cat: "body" }, 
+            { en: "FACE", he: "פנים", cat: "body" }, { en: "EYE", he: "עיניים", cat: "body" }, 
+            { en: "EAR", he: "אוזניים", cat: "body" }, { en: "NOSE", he: "אף", cat: "body" }, 
+            { en: "MOUTH", he: "פה", cat: "body" }, { en: "HAND", he: "יד", cat: "body" }, 
+            { en: "LEG", he: "רגל", cat: "body" }, { en: "FINGER", he: "אצבע", cat: "body" }, 
+            { en: "HAIR", he: "שיער", cat: "body" }, { en: "HEART", he: "לב", cat: "body" }, 
+            { en: "SMILE", he: "חיוך", cat: "body" }, { en: "VOICE", he: "קול", cat: "body" }, 
+            { en: "NAME", he: "שם", cat: "body" }
+        ],
+        level3: [
+            { en: "DO", he: "לעשות", cat: "action" }, { en: "GO", he: "ללכת", cat: "action" }, 
+            { en: "COME", he: "לבוא", cat: "action" }, { en: "SEE", he: "לראות", cat: "action" }, 
+            { en: "LOOK", he: "להביט", cat: "action" }, { en: "HEAR", he: "לשמע", cat: "action" }, 
+            { en: "LISTEN", he: "להקשיב", cat: "action" }, { en: "EAT", he: "לאכול", cat: "action" }, 
+            { en: "DRINK", he: "לשתות", cat: "action" }, { en: "SLEEP", he: "לישון", cat: "action" }, 
+            { en: "WAKE UP", he: "לקום", cat: "action" }, { en: "PLAY", he: "לשחק", cat: "action" }, 
+            { en: "RUN", he: "לרוץ", cat: "action" }, { en: "WALK", he: "לצעוד", cat: "action" }, 
+            { en: "JUMP", he: "לקפוץ", cat: "action" }, { en: "SIT", he: "לשב", cat: "action" }, 
+            { en: "STAND", he: "לעמוד", cat: "action" }, { en: "TALK", he: "לדבר", cat: "action" }, 
+            { en: "SAY", he: "לאמר", cat: "action" }, { en: "TELL", he: "לספר", cat: "action" }, 
+            { en: "ASK", he: "לשאול", cat: "action" }, { en: "ANSWER", he: "להשיב", cat: "action" }, 
+            { en: "WORK", he: "לעבוד", cat: "action" }, { en: "REST", he: "לנוח", cat: "action" }, 
+            { en: "HELP", he: "לעזור", cat: "action" },
+            { en: "READ", he: "לקרוא", cat: "learning" }, { en: "WRITE", he: "לכתוב", cat: "learning" }, 
+            { en: "DRAW", he: "לצייר", cat: "learning" }, { en: "PAINT", he: "לטפטף", cat: "learning" }, 
+            { en: "BUILD", he: "לבנות", cat: "learning" }, { en: "OPEN", he: "לפתוח", cat: "learning" }, 
+            { en: "CLOSE", he: "לסגור", cat: "learning" }, { en: "FIND", he: "למצוא", cat: "learning" }, 
+            { en: "HIDE", he: "להסתיר", cat: "learning" }, { en: "GIVE", he: "לתת", cat: "learning" }, 
+            { en: "TAKE", he: "לקחת", cat: "learning" }, { en: "LEARN", he: "ללמוד", cat: "learning" }, 
+            { en: "THINK", he: "לחשוב", cat: "learning" }, { en: "KNOW", he: "לדעת", cat: "learning" }, 
+            { en: "UNDERSTAND", he: "להבין", cat: "learning" }, { en: "REMEMBER", he: "לזכור", cat: "learning" }, 
+            { en: "FORGET", he: "לשכוח", cat: "learning" }, { en: "CREATE", he: "ליצור", cat: "learning" }, 
+            { en: "MAKE", he: "להכין", cat: "learning" }, { en: "USE", he: "להשתמש", cat: "learning" },
+            { en: "LIKE", he: "אני אוהב/ת", cat: "emotion" }, { en: "LOVE", he: "אהבה", cat: "emotion" }, 
+            { en: "WANT", he: "לרצות", cat: "emotion" }, { en: "NEED", he: "צריך", cat: "emotion" }, 
+            { en: "FEEL", he: "להרגיש", cat: "emotion" }, { en: "HUNGRY", he: "רעב/ה", cat: "emotion" }, 
+            { en: "THIRSTY", he: "צמא/ה", cat: "emotion" }, { en: "TIRED", he: "עייפ/ה", cat: "emotion" }, 
+            { en: "BRAVE", he: "אמיצה", cat: "emotion" }, { en: "SCARED", he: "פחדנית", cat: "emotion" }, 
+            { en: "ANGRY", he: "כועסת", cat: "emotion" }, { en: "FUNNY", he: "מצחיק", cat: "emotion" }, 
+            { en: "BEAUTIFUL", he: "יפה", cat: "emotion" }, { en: "GREAT", he: "נהדר", cat: "emotion" }, 
+            { en: "COOL", he: "מדהים", cat: "emotion" }
+        ],
+        level4: [
+            { en: "AND", he: "וגם", cat: "connectors" }, { en: "OR", he: "או", cat: "connectors" }, 
+            { en: "BUT", he: "אבל", cat: "connectors" }, { en: "BECAUSE", he: "כי", cat: "connectors" }, 
+            { en: "WITH", he: "עם", cat: "connectors" }, { en: "FOR", he: "עבור", cat: "connectors" }, 
+            { en: "WHO", he: "מי", cat: "questions" }, { en: "WHAT", he: "מה", cat: "questions" }, 
+            { en: "WHERE", he: "איפה", cat: "questions" }, { en: "WHEN", he: "מתי", cat: "questions" }, 
+            { en: "WHY", he: "למה", cat: "questions" }, { en: "HOW", he: "איך", cat: "questions" }, 
+            { en: "THIS", he: "זה", cat: "questions" }, { en: "THAT", he: "ההוא", cat: "questions" }, 
+            { en: "HERE", he: "כאן", cat: "questions" }, { en: "THERE", he: "שם", cat: "questions" }, 
+            { en: "ALL", he: "כל", cat: "connectors" }, { en: "SOME", he: "כמה", cat: "connectors" }, 
+            { en: "MANY", he: "הרבה", cat: "connectors" }, { en: "FEW", he: "מעט", cat: "connectors" },
+            { en: "TIME", he: "זמן", cat: "time" }, { en: "DAY", he: "יום", cat: "time" }, 
+            { en: "NIGHT", he: "לילה", cat: "time" }, { en: "MORNING", he: "בוקר", cat: "time" }, 
+            { en: "EVENING", he: "ערב", cat: "time" }, { en: "TODAY", he: "היום", cat: "time" }, 
+            { en: "TOMORROW", he: "מחר", cat: "time" }, { en: "NOW", he: "עכשיו", cat: "time" }, 
+            { en: "LATER", he: "מאוחר יותר", cat: "time" }, { en: "ALWAYS", he: "תמיד", cat: "time" }, 
+            { en: "NEVER", he: "לעולם לא", cat: "time" }, { en: "NEW", he: "חדש", cat: "time" }, 
+            { en: "OLD", he: "ישן", cat: "time" }, { en: "FIRST", he: "ראשון", cat: "time" }, 
+            { en: "LAST", he: "אחרון", cat: "time" }, { en: "BEGINNING", he: "תחילת", cat: "time" }, 
+            { en: "END", he: "סוף", cat: "time" }, { en: "EARLY", he: "מוקדם", cat: "time" }, 
+            { en: "LATE", he: "מאוחר", cat: "time" }, { en: "SOON", he: "בקרוב", cat: "time" },
+            { en: "LIFE", he: "חיים", cat: "songs" }, { en: "WORLD", he: "עולם", cat: "songs" }, 
+            { en: "DREAM", he: "חלום", cat: "songs" }, { en: "HEART", he: "לב", cat: "songs" }, 
+            { en: "SOUL", he: "נשמה", cat: "songs" }, { en: "FIRE", he: "אש", cat: "songs" }, 
+            { en: "LIGHT", he: "אור", cat: "songs" }, { en: "DARK", he: "חושך", cat: "songs" }, 
+            { en: "STAR", he: "כוכב", cat: "songs" }, { en: "TOGETHER", he: "יחד", cat: "songs" }, 
+            { en: "ALONE", he: "לבד", cat: "songs" }, { en: "FOREVER", he: "לנצח", cat: "songs" }, 
+            { en: "HOME", he: "בית", cat: "songs" }, { en: "FRIENDS", he: "חברים", cat: "songs" }, 
+            { en: "MUSIC", he: "מוזיקה", cat: "songs" }
+        ]
+    };
+
+    const shopItems = [
+        // Plants (10)
+        { en: 'Pink Flower', he: 'פרח ורוד', price: 15, category: 'plants', icon: '🌸' },
+        { en: 'Magic Tree', he: 'עץ קסום', price: 40, category: 'plants', icon: '🌳' },
+        { en: 'Big Mushroom', he: 'פטרייה גדולה', price: 25, category: 'plants', icon: '🍄' },
+        { en: 'Green Grass', he: 'דשא ירוק', price: 10, category: 'plants', icon: '🌿' },
+        { en: 'Glowing Rose', he: 'ורד זוהר', price: 35, category: 'plants', icon: '🥀' },
+        { en: 'Crystal Bush', he: 'שיח קריסטל', price: 45, category: 'plants', icon: '💎' },
+        { en: 'Sunflower', he: 'צמח השמש', price: 20, category: 'plants', icon: '🌻' },
+        { en: 'Lavender', he: 'לבנדר', price: 18, category: 'plants', icon: '💜' },
+        { en: 'Cactus', he: 'קקטוס', price: 12, category: 'plants', icon: '🌵' },
+        { en: 'Vine', he: 'גפן', price: 22, category: 'plants', icon: '🍇' },
+
+        // Friends & Creatures (14)
+        { en: 'White Rabbit', he: 'ארנב לבן', price: 50, category: 'friends', icon: '🐰' },
+        { en: 'Golden Butterfly', he: 'פרפר זהוב', price: 35, category: 'friends', icon: '🦋' },
+        { en: 'Blue Fairy', he: 'פיה כחולה', price: 75, category: 'friends', icon: '🧚‍♀️' },
+        { en: 'Small Owl', he: 'ינשוף קטן', price: 60, category: 'friends', icon: '🦉' },
+        { en: 'Unicorn', he: 'חד קרן', price: 150, category: 'friends', icon: '🦄' },
+        { en: 'Dragon Baby', he: 'תינוק דרקון', price: 120, category: 'friends', icon: '🐲' },
+        { en: 'Elf Girl', he: 'ילדת אלף', price: 90, category: 'friends', icon: '🧝‍♀️' },
+        { en: 'Frog Prince', he: 'נסיך הצפרדע', price: 80, category: 'friends', icon: '🐸' },
+        { en: 'Butterfly Queen', he: 'מלכת הפרפרים', price: 100, category: 'friends', icon: '👑' },
+        { en: 'Squirrel', he: 'סנאי', price: 30, category: 'friends', icon: '🐿️' },
+        { en: 'Deer', he: 'איילה', price: 70, category: 'friends', icon: '🦌' },
+        { en: 'Fox', he: 'שועל', price: 55, category: 'friends', icon: '🦊' },
+        { en: 'Bear Cub', he: 'גור דוב', price: 65, category: 'friends', icon: '🐻' },
+        { en: 'Penguin', he: 'פינגווין', price: 45, category: 'friends', icon: '🐧' },
+
+        // Structures (12)
+        { en: 'Glass House', he: 'בית זכוכית', price: 150, category: 'structures', icon: '🏠' },
+        { en: 'Stone Bridge', he: 'גשר אבנים', price: 100, category: 'structures', icon: '🌉' },
+        { en: 'Star Fountain', he: 'מזרקת כוכבים', price: 120, category: 'structures', icon: '⛲' },
+        { en: 'Light Gate', he: 'שער אור', price: 200, category: 'structures', icon: '✨' },
+        { en: 'Castle Tower', he: 'מצודת טירה', price: 250, category: 'structures', icon: '🏰' },
+        { en: 'Treehouse', he: 'בית על העץ', price: 180, category: 'structures', icon: '🏡' },
+        { en: 'Windmill', he: 'טחנת רוח', price: 160, category: 'structures', icon: '🌬️' },
+        { en: 'Crystal Cave', he: 'מערת קריסטל', price: 220, category: 'structures', icon: '🕳️' },
+        { en: 'Magic Well', he: 'באר קסומה', price: 140, category: 'structures', icon: '井' },
+        { en: 'Gazebo', he: 'מבנה גינון', price: 130, category: 'structures', icon: '⛺' },
+        { en: 'Lighthouse', he: 'מגדלור', price: 190, category: 'structures', icon: '🗼' },
+        { en: 'Pagoda', he: 'פגודה', price: 170, category: 'structures', icon: '🏯' },
+
+        // Decorations (8)
+        { en: 'Hanging Lantern', he: 'פנס תלוי', price: 25, category: 'decorations', icon: '🏮' },
+        { en: 'Fireflies', he: 'גחליליות', price: 30, category: 'decorations', icon: '💡' },
+        { en: 'String Lights', he: 'תאורת חוטים', price: 40, category: 'decorations', icon: '🎇' },
+        { en: 'Rainbow Arc', he: 'קשת בענן', price: 80, category: 'decorations', icon: '🌈' },
+        { en: 'Moonlight Beam', he: 'קרן ירח', price: 60, category: 'decorations', icon: '🌙' },
+        { en: 'Sparkle Dust', he: 'אבק זוהר', price: 35, category: 'decorations', icon: '✨' },
+        { en: 'Balloons', he: 'בלונים', price: 20, category: 'decorations', icon: '🎈' },
+        { en: 'Flags', he: 'דגלים', price: 15, category: 'decorations', icon: '🚩' },
+
+        // Treasures (8)
+        { en: 'Treasure Chest', he: 'תיבת אוצר', price: 100, category: 'treasures', icon: '📦' },
+        { en: 'Gold Coins', he: 'מטבעות זהב', price: 50, category: 'treasures', icon: '💰' },
+        { en: 'Ruby Gem', he: 'אבן אדום', price: 75, category: 'treasures', icon: '💍' },
+        { en: 'Sapphire Stone', he: 'אבן ספיר', price: 70, category: 'treasures', icon: '💠' },
+        { en: 'Magic Wand', he: 'שבט קסמים', price: 90, category: 'treasures', icon: '🪄' },
+        { en: 'Golden Key', he: 'מפתח זהב', price: 85, category: 'treasures', icon: '🔑' },
+        { en: 'Compass', he: 'מצפן', price: 45, category: 'treasures', icon: '🧭' },
+        { en: 'Map Scroll', he: 'מפה עתיקה', price: 55, category: 'treasures', icon: '🗺️' }
+    ];
+
+    const curriculum = [
+        { id: 1, title: "שלב 1", desc: "משחקים ובסיס" },
+        { id: 2, title: "שלב 2", desc: "היער הקסום" },
+        { id: 3, title: "שלב 3", desc: "פעולות" },
+        { id: 4, title: "שלב 4", desc: "שירים וזמן" }
+    ];
+
+    let gameState = {
+        crystals: 0,
+        unlockedLevels: [1],
+        inventory: [], 
+        forestPlacements: [],
+        currentLevelId: 1,
+        sessionWords: [],      
+        wordIndex: 0,          
+        sessionStartedAt: null
+    };
+
+    function loadGame() {
+        try {
+            const saved = localStorage.getItem('glowQuestSave');
+            if(saved) {
+                gameState = JSON.parse(saved);
+
+                if(!gameState.crystals || typeof gameState.crystals !== 'number') gameState.crystals = 0;
+                if(!Array.isArray(gameState.unlockedLevels)) gameState.unlockedLevels = [1];
+                if(!Array.isArray(gameState.inventory)) gameState.inventory = [];
+                if(!Array.isArray(gameState.forestPlacements)) gameState.forestPlacements = [];
+
+                console.log("✅ Game loaded successfully");
+            } else {
+                console.log("ℹ️ No save found, starting fresh");
+            }
+        } catch(e) {
+            console.error("❌ Error loading game:", e);
+        }
+        updateUI();
+    }
+
+    function saveGame() {
+        try {
+            localStorage.setItem('glowQuestSave', JSON.stringify(gameState));
+            updateUI();
+        } catch(e) {
+            console.error("❌ Error saving game:", e);
+        }
+    }
+
+    function resetProgress() {
+        if(confirm("האם למחוק הכל ולהתחיל מחדש?")) {
+            localStorage.removeItem('glowQuestSave');
+            location.reload();
+        }
+    }
+
+    window.showScreen = function(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+
+        setBackground(screenId.replace('screen-', ''));
+
+        if(screenId === 'screen-map') renderVisualMap();
+        if(screenId === 'screen-game') startSession(gameState.currentLevelId);
+        if(screenId === 'screen-shop') renderShop();
+        if(screenId === 'screen-vocab') renderVocabularyList();
+        if(screenId === 'screen-forest') renderForest();
+    }
+
+    window.openMap = function() { showScreen('screen-map'); }
+
+    function updateUI() {
+        const globalEl = document.getElementById('global-crystals');
+        const gameEl = document.getElementById('game-crystals');
+        if(globalEl) globalEl.innerText = gameState.crystals;
+        if(gameEl) gameEl.innerText = gameState.crystals;
+    }
+
+    window.updateTranslation = function() {
+        const isChecked = document.getElementById('trans-check').checked;
+        document.querySelectorAll('.he-word').forEach(el => {
+            isChecked ? el.classList.remove('hidden-trans') : el.classList.add('hidden-trans');
+        });
+    }
+
+    function startSession(levelId) {
+        try {
+            const fullList = vocabularyBank['level'+levelId] || [];
+
+            if(fullList.length === 0) {
+                alert("שלב זה עדיין מתפתח! חזור לשלבים הקודמים.");
+                return;
+            }
+
+            if(gameState.sessionWords && gameState.sessionWords.length > 0 && gameState.wordIndex < gameState.sessionWords.length) {
+                console.log(`▶️ Resuming Level ${levelId} at word ${gameState.wordIndex}`);
+            } else {
+                gameState.sessionWords = [...fullList].sort(() => Math.random() - 0.5).slice(0, 10);
+                gameState.wordIndex = 0;
+                gameState.sessionStartedAt = Date.now();
+                console.log(`🎮 Starting new Level ${levelId} with ${gameState.sessionWords.length} words`);
+            }
+
+            renderQuestion();
+        } catch(e) {
+            console.error("Error in startSession:", e);
+        }
+    }
+
+    function renderQuestion() {
+        try {
+            if(!gameState.sessionWords || !gameState.sessionWords[gameState.wordIndex]) {
+                completeSession();
+                return;
+            }
+
+            const targetWordObj = gameState.sessionWords[gameState.wordIndex];
+            const progressPercent = ((gameState.wordIndex) / gameState.sessionWords.length) * 100;
+
+            const progressFill = document.getElementById('session-progress');
+            if(progressFill) progressFill.style.width = `${progressPercent}%`;
+
+            const taskText = document.getElementById('task-text');
+            if(taskText) taskText.innerHTML = `מצאי את המילה שמשמעותה "<b>${targetWordObj.he}</b>" (${gameState.wordIndex + 1}/${gameState.sessionWords.length})`;
+
+            const container = document.getElementById('options-list');
+            if(!container) {
+                console.error("Container not found!");
+                return;
+            }
+            container.innerHTML = '';
+
+            let options = [targetWordObj];
+            while(options.length < 3) {
+                let random = gameState.sessionWords[Math.floor(Math.random() * gameState.sessionWords.length)];
+                if(random !== targetWordObj && !options.includes(random)) {
+                    options.push(random);
+                } else if (vocabularyBank.level1.length > 0) {
+                     let fallback = vocabularyBank.level1[Math.floor(Math.random() * vocabularyBank.level1.length)];
+                     if(!options.find(o => o.en === fallback.en)) options.push(fallback);
+                }
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            options.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'choice-card';
+
+                card.addEventListener('click', () => checkAnswer(item, card));
+
+                card.innerHTML = `
+                    <div class="word-text">
+                        <span class="eng-word">${item.en}</span>
+                        <span class="he-word ${document.getElementById('trans-check').checked ? '' : 'hidden-trans'}">${item.he}</span>
+                    </div>
+                    <div class="audio-icon" onclick="event.stopPropagation(); speak('${item.en}')">🔊</div>
+                `;
+                container.appendChild(card);
+            });
+
+            console.log(`✅ Question ${gameState.wordIndex + 1} rendered successfully`);
+        } catch(e) {
+            console.error("❌ Error rendering question:", e);
+        }
+    }
+
+    function checkAnswer(selectedItem, element) {
+        try {
+            const target = gameState.sessionWords[gameState.wordIndex];
+
+            if(!selectedItem || !target) {
+                console.error("Invalid items passed to checkAnswer");
+                return;
+            }
+
+            if(selectedItem.en === target.en) {
+                element.style.borderColor = '#a5d6a7';
+                element.style.transform = 'scale(1.05)';
+
+                gameState.crystals += 1;
+                saveGame();
+
+                speak("Excellent!");
+
+                setTimeout(() => {
+                    gameState.wordIndex++;
+                    saveGame();
+                    renderQuestion();
+                }, 800);
+            } else {
+                element.style.borderColor = '#ef9a9a';
+                element.style.transform = 'translateX(-5px)';
+                speak("Try again");
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 200);
+            }
+        } catch(e) {
+            console.error("❌ Error checking answer:", e);
+        }
+    }
+
+    function completeSession() {
+        try {
+            gameState.crystals += 50;
+            saveGame();
+
+            const completedNumEl = document.getElementById('completed-level-num');
+            if(completedNumEl) completedNumEl.innerText = gameState.currentLevelId;
+
+            const modal = document.getElementById('level-complete-modal');
+            if(modal) modal.style.display = 'flex';
+
+            createConfetti();
+            speak("Great job! Level Complete");
+        } catch(e) {
+            console.error("Error in completeSession:", e);
+        }
+    }
+
+    function createConfetti() {
+        try {
+            const wrapper = document.getElementById('confetti-wrapper');
+            if(wrapper) {
+                wrapper.innerHTML = '';
+                const colors = ['#ff80ab', '#b39ddb', '#ffd700', '#a5d6a7', '#f0f4c3'];
+
+                for(let i = 0; i < 50; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.left = Math.random() * 100 + '%';
+                    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.animationDelay = Math.random() * 2 + 's';
+                    piece.style.opacity = Math.random();
+                    wrapper.appendChild(piece);
+                }
+            }
+        } catch(e) {
+            console.error("Error creating confetti:", e);
+        }
+    }
+
+    window.continueToNextLevel = function() {
+        try {
+            const nextLvl = gameState.currentLevelId + 1;
+            if(nextLvl <= 4 && !gameState.unlockedLevels.includes(nextLvl)) {
+                gameState.unlockedLevels.push(nextLvl);
+                saveGame();
+            }
+
+            const modal = document.getElementById('level-complete-modal');
+            if(modal) modal.style.display = 'none';
+
+            if(nextLvl <= 4) {
+                gameState.currentLevelId = nextLvl;
+                gameState.sessionWords = [];
+                gameState.wordIndex = 0;
+                showScreen('screen-game');
+            } else {
+                alert("כל הכבוד! סיימת את כל השלבים הזמינים 🌟");
+                showScreen('screen-lobby');
+            }
+        } catch(e) {
+            console.error("Error continuing to next level:", e);
+        }
+    }
+
+    window.goHomeFromSuccess = function() {
+        try {
+            const modal = document.getElementById('level-complete-modal');
+            if(modal) modal.style.display = 'none';
+            gameState.sessionWords = [];
+            gameState.wordIndex = 0;
+            showScreen('screen-lobby');
+        } catch(e) {
+            console.error("Error going home from success:", e);
+        }
+    }
+
+    window.pauseGame = function() {
+        saveGame(); 
+        const modal = document.getElementById('pause-modal');
+        if(modal) modal.style.display = 'flex';
+    }
+
+    window.resumeGame = function() {
+        const modal = document.getElementById('pause-modal');
+        if(modal) modal.style.display = 'none';
+        renderQuestion();
+    }
+
+    window.quitToLobby = function() {
+        const modal = document.getElementById('pause-modal');
+        if(modal) modal.style.display = 'none';
+        gameState.sessionWords = [];
+        gameState.wordIndex = 0;
+        showScreen('screen-lobby');
+    }
+
+    window.renderVocabularyList = function() {
+        try {
+            const container = document.getElementById('vocab-list-container');
+            if(!container) return;
+            container.innerHTML = '';
+
+            let allLearnedWords = [];
+            gameState.unlockedLevels.forEach(levelNum => {
+                const levelData = vocabularyBank['level'+levelNum] || [];
+                allLearnedWords = [...allLearnedWords, ...levelData];
+            });
+
+            if(allLearnedWords.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#888;">עדיין לא למדת מילים. התחליי לשחק בשלבים!</p>';
+                return;
+            }
+
+            allLearnedWords.forEach(wordObj => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.addEventListener('click', () => speak(wordObj.en));
+
+                card.innerHTML = `
+                    <div class="vocab-en">${wordObj.en}</div>
+                    <div class="vocab-he">${wordObj.he}</div>
+                    <small style="color:var(--accent-color)">🔊 לחצי להשמעה</small>
+                `;
+                container.appendChild(card);
+            });
+        } catch(e) {
+            console.error("Error rendering vocab list:", e);
+        }
+    }
+
+    window.renderVisualMap = function() {
+        try {
+            const container = document.getElementById('visual-map');
+            if(!container) return;
+            container.innerHTML = '';
+
+            curriculum.forEach((lvl, idx) => {
+                const isUnlocked = gameState.unlockedLevels.includes(lvl.id);
+                const progress = idx / Math.max(curriculum.length - 1, 1);
+                const leftPercent = 5 + (progress * 90); 
+                const topPercent = 80 - (Math.sin(progress * Math.PI) * 50); 
+
+                const node = document.createElement('div');
+                node.className = `level-node-map ${isUnlocked ? 'unlocked' : 'locked'}`;
+                node.style.left = `${leftPercent}%`;
+                node.style.top = `${topPercent}%`;
+                node.innerText = lvl.id;
+
+                const tooltip = document.createElement('span');
+                tooltip.className = 'level-tooltip';
+                tooltip.innerText = lvl.title;
+                node.appendChild(tooltip);
+
+                if(isUnlocked) {
+                    node.addEventListener('click', () => {
+                        gameState.currentLevelId = lvl.id;
+                        showScreen('screen-game');
+                    });
+                }
+                container.appendChild(node);
+            });
+        } catch(e) {
+            console.error("Error rendering map:", e);
+        }
+    }
+
+    // ✅ FIXED SHOP RENDERING LOGIC WITH BETTER CLICK HANDLING
+    window.renderShop = function() {
+        try {
+            console.log("🛍️ Rendering shop...");
+            const container = document.getElementById('shop-container');
+            if(!container) {
+                console.error("❌ Shop container not found!");
+                return;
+            }
+            container.innerHTML = '';
+
+            const categories = [
+                { id: 'plants', title: 'קטגוריה 1: צמחיית פסטל 🌸' },
+                { id: 'friends', title: 'קטגוריה 2: חברים מהאגדות 🦋' },
+                { id: 'structures', title: 'קטגוריה 3: מבני קסם ✨' },
+                { id: 'decorations', title: 'קטגוריה 4: תאורה וקישוט 🎆' },
+                { id: 'treasures', title: 'קטגוריה 5: אוצרות וכלים 💰' }
+            ];
+
+            categories.forEach(cat => {
+                const catTitle = document.createElement('h4');
+                catTitle.className = 'shop-category-title';
+                catTitle.innerText = cat.title;
+                container.appendChild(catTitle);
+
+                const grid = document.createElement('div');
+                grid.className = 'shop-grid';
+
+                shopItems.filter(i => i.category === cat.id).forEach(item => {
+                    const owned = gameState.inventory.includes(item.en);
+
+                    let btnHtml = '';
+                    if(owned) {
+                        btnHtml = `<button class="action-btn" style="background:#ccc; cursor:not-allowed;" disabled>בבעלותך</button>`;
+                    } else {
+                         // ✅ Using onclick attribute directly for better reliability
+                         btnHtml = `
+                            <button class="action-btn btn-primary" onclick="attemptPurchase('${item.en}')">
+                                לקנות ב-${item.price} גבישים
+                            </button>
+                         `;
+                    }
+
+                    const itemCard = document.createElement('div');
+                    itemCard.className = 'shop-item';
+                    itemCard.innerHTML = `
+                        ${owned ? '<div class="owned-badge">בבעלותך</div>' : ''}
+                        <div class="item-image-placeholder">${item.icon}</div>
+                        <div class="item-info">
+                            <div class="item-name-en">${item.en}</div>
+                            <div class="item-price">💎 ${item.price}</div>
+                            <div style="margin-top:8px;">${btnHtml}</div>
+                        </div>
+                    `;
+                    grid.appendChild(itemCard);
+                });
+
+                container.appendChild(grid);
+            });
+
+            console.log("✅ Shop rendered successfully");
+        } catch(e) {
+            console.error("❌ Error rendering shop:", e);
+        }
+    }
+
+    let pendingItem = null;
+
+    window.attemptPurchase = function(itemEnName) {
+        try {
+            console.log(`👉 Purchase attempt for: ${itemEnName}`);
+            const item = shopItems.find(i => i.en === itemEnName);
+
+            if (!item) {
+                alert("פריט לא נמצא");
+                return;
+            }
+
+            if (gameState.crystals < item.price) {
+                speak(`חסרים לך גבישי אור. נדרשים ${item.price}`);
+                setTimeout(() => alert(`חסרים לך גבישי אור!\nנדרשים ${item.price}, יש לך ${gameState.crystals}.`), 500);
+                return;
+            }
+
+            if(gameState.inventory.includes(item.en)) {
+                 speak("יש לך כבר את זה!");
+                 setTimeout(() => alert("יש לך כבר פריט זה ביער שלך!"), 500);
+                 return;
+            }
+
+            pendingItem = item;
+            console.log("✅ Opening voice challenge modal...");
+            showVoiceChallengeModal(item);
+        } catch(e) {
+            console.error("❌ Error in attemptPurchase:", e);
+        }
+    }
+
+    // ✅ NEW VOICE CHALLENGE MODAL - Fixed structure
+    window.showVoiceChallengeModal = function(item) {
+        try {
+            const modal = document.getElementById('purchase-modal');
+            if(!modal) {
+                console.error("❌ purchase-modal element not found!");
+                return;
+            }
+
+            // Update Modal Content for Voice Challenge
+            const modalBox = modal.querySelector('.modal-box');
+            if(modalBox) {
+                modalBox.innerHTML = `
+                    <div class="confetti-container" id="confetti-wrapper"></div> 
+                    <div style="font-size:60px; margin-bottom:10px;">🗣️</div>
+                    <h3 style="color:var(--accent-color)">אתגר הקנייה!</h3>
+                    <p>כדי להוסיף את <b>${item.en}</b> ליער, עלייך לבטא אותו באנגלית.</p>
+
+                    <div style="background:#f9f9f9; padding:20px; border-radius:15px; text-align:center; margin:15px 0;">
+                        <span style="font-size:40px;">${item.icon}</span><br>
+                        <strong style="font-size:1.2rem; color:var(--primary-color)">${item.en}</strong>
+                    </div>
+
+                    <button id="voice-mic-btn" class="action-btn btn-secondary" style="width:auto; min-width:200px;" onclick="startListening('${item.en}', completePurchaseWithVoice, () => closePurchaseModal())">
+                        🔊 הגידי את המילה
+                    </button>
+
+                    <button onclick="closePurchaseModal()" style="margin-top:15px; background:#ccc; border:none; padding:8px 20px; border-radius:10px;">ביטול</button>
+                `;
+            }
+
+            if(modal) {
+                modal.style.display = 'flex';
+                console.log("✅ Modal displayed");
+            }
+            speak(`קניית ${item.en} דורשת ביטוי נכון.`);
+        } catch(e) {
+            console.error("Error showing voice challenge:", e);
+        }
+    }
+
+    window.completePurchaseWithVoice = function() {
+        console.log("✅ Purchase successful via voice!");
+        closePurchaseModal();
+        gameState.crystals -= pendingItem.price;
+        gameState.inventory.push(pendingItem.en);
+        saveGame();
+
+        alert(`🎉 מזל טוב!\nרכשת את: ${pendingItem.en}\nהוא מחכה לך בבנייה.`);
+        renderShop();
+        speak("Congratulations! Item bought.");
+    }
+
+    window.closePurchaseModal = function() {
+        const modal = document.getElementById('purchase-modal');
+        if(modal) modal.style.display = 'none';
+        stopListeningVisual();
+        pendingItem = null;
+    }
+
+    window.renderForest = function() {
+        try {
+            const canvas = document.getElementById('forest-canvas');
+            const inventoryBar = document.getElementById('inventory-bar');
+            if(!canvas || !inventoryBar) return;
+
+            canvas.innerHTML = '';
+            inventoryBar.innerHTML = '';
+
+            gameState.forestPlacements.forEach((placement, idx) => {
+                const itemData = shopItems.find(i => i.en === placement.itemEn);
+                if(!itemData) return;
+
+                const el = document.createElement('div');
+                el.className = 'placed-item';
+                el.innerText = itemData.icon;
+                el.style.left = `${placement.x}%`;
+                el.style.top = `${placement.y}%`;
+                el.dataset.index = idx;
+
+                el.onclick = (e) => {
+                    e.stopPropagation();
+                    const sentences = [
+                        "I am beautiful.",
+                        "Look at me!",
+                        "Welcome to my forest.",
+                        "You are a great warrior."
+                    ];
+                    const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+
+                    speak(`${itemData.en}. ${randomSentence}`);
+
+                    if(confirm(`מחוק את ${itemData.he}?`)) {
+                        gameState.forestPlacements.splice(idx, 1);
+                        saveGame();
+                        renderForest();
+                    }
+                };
+                canvas.appendChild(el);
+            });
+
+            if(gameState.inventory.length === 0) {
+                inventoryBar.innerHTML = '<small style="color:#888; margin:auto;">עדיין אין לך פריטים להציב.</small>';
+                return;
+            }
+
+            gameState.inventory.forEach(itemEn => {
+                const itemData = shopItems.find(i => i.en === itemEn);
+                if(!itemData) return;
+
+                const slot = document.createElement('div');
+                slot.className = 'inventory-slot';
+                slot.innerText = itemData.icon;
+                slot.onclick = () => {
+                    document.querySelectorAll('.inventory-slot').forEach(s => s.classList.remove('selected'));
+                    selectedItemForPlacement = selectedItemForPlacement === itemEn ? null : itemEn;
+                    slot.classList.toggle('selected', !!selectedItemForPlacement);
+                };
+                inventoryBar.appendChild(slot);
+            });
+        } catch(e) {
+            console.error("Error rendering forest:", e);
+        }
+    }
+
+    let selectedItemForPlacement = null;
+    window.placeItem = function(event) {
+        if(!selectedItemForPlacement) return;
+        const canvas = event.currentTarget;
+        const rect = canvas.getBoundingClientRect();
+        const xPercent = ((event.clientX - rect.left) / rect.width) * 100;
+        const yPercent = ((event.clientY - rect.top) / rect.height) * 100;
+
+        gameState.forestPlacements.push({ itemEn: selectedItemForPlacement, x: xPercent, y: yPercent });
+        saveGame();
+        speak("Placed!");
+        renderForest();
+    }
+
+    window.clearForest = function() {
+        if(confirm("למחוק כל הפריטים מהיער?")) {
+            gameState.forestPlacements = [];
+            saveGame();
+            renderForest();
+        }
+    }
+
+    loadGame();
+    initTTS();
+
+    setLobbyBackground();
+</script>
+</body>
+</html>
