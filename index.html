@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Glow-Sword Quest v9.1</title>
+    <title>The Glow-Sword Quest v9.5</title>
     <style>
         /* --- CSS Base & Variables --- */
         :root {
@@ -31,7 +31,24 @@
         .score-badge { background: white; color: var(--accent-color); padding: 8px 20px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-width: 100px; text-align: center;}
         .nav-btn { background: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        .lobby-hero { text-align: center; margin-top: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        /* ✅ FIX 1: Adjusted Lobby Hero to push Princess down to entrance */
+        .lobby-hero { 
+            text-align: center; 
+            margin-top: 0; 
+
+            /* Remove expansion so she doesn't float up */
+            flex-grow: 0; 
+
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+
+            /* Pushes her down past the title frame towards the water */
+            margin-top: 35vh; 
+
+            padding-bottom: 20px;
+        }
 
         .warrior-img { 
             width: 180px; height: auto; 
@@ -44,6 +61,23 @@
 
         #screen-lobby .warrior-img {
             width: 250px !important;
+        }
+
+        /* Warrior Wrapper for Map Screen */
+        #map-warrior-wrapper {
+            position: absolute;
+            left: 50%;
+            top: 20%; /* Default start pos */
+            transform: translateX(-50%);
+            z-index: 4; 
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth movement */
+        }
+
+        #map-warrior-wrapper img {
+            width: 160px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+            animation: float 3s ease-in-out infinite;
         }
 
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -79,39 +113,33 @@
         .level-tooltip { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: white; padding: 5px 10px; border-radius: 10px; font-size: 0.7rem; white-space: nowrap; visibility: hidden; }
         .level-node-map:hover .level-tooltip { visibility: visible; }
 
-        .forest-canvas { flex-grow: 1; position: relative; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%); border: 3px dashed rgba(255,255,255,0.5); border-radius: 20px; margin: 10px 0; touch-action: none; }
-        .placed-item { position: absolute; font-size: 50px; cursor: grab; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); animation: popIn 0.3s ease; user-select: none; }
-        @keyframes popIn { from{transform:scale(0);} to{transform:scale(1);} }
-        .inventory-bar { background: white; border-radius: 15px; padding: 10px; display: flex; gap: 10px; overflow-x: auto; max-height: 100px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); }
-        .inventory-slot { min-width: 60px; height: 60px; background: #f3e5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
-        .inventory-slot.selected { border-color: var(--accent-color); transform: scale(1.1); }
-
-        .vocab-list { 
-            display: grid; gap: 10px; padding-bottom: 20px; 
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        /* ✅ FIX 3: Small Star Badge for Map */
+        .node-star-badge {
+            position: absolute;
+            font-size: 24px; 
+            color: #ffd700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            z-index: 10;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .vocab-card {
-            background: white; border-radius: 15px; padding: 15px;
-            text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            cursor: pointer; transition: 0.2s;
-        }
-        .vocab-card:hover { transform: translateY(-3px); }
-        .vocab-en { font-weight: bold; color: var(--primary-color); font-size: 1.1rem; }
-        .vocab-he { color: #888; font-size: 0.9rem; margin-top: 5px; }
 
-        /* ✅ FIXED MODAL STYLES */
+        /* ✅ FIX 3: Smaller Success Banner (Big star removed) */
         .success-modal {
-            position: fixed; inset: 0; z-index: 9999 !important; /* Higher Z-Index */
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            position: fixed; inset: 0; z-index: 9999 !important;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
             display: none; align-items: center; justify-content: center;
         }
 
         .modal-box {
-            background: white; padding: 30px; border-radius: 25px;
-            text-align: center; width: 85%; max-width: 350px;
+            background: white; padding: 20px; border-radius: 25px;
+            text-align: center; width: 90%; max-width: 280px; /* Reduced Size */
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative; overflow: hidden;
-            pointer-events: auto; /* Ensure clicks work inside modal */
+            pointer-events: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+
+            h2 { font-size: 1.4rem !important; margin-bottom: 10px !important; }
+            p { font-size: 0.9rem !important; line-height: 1.4; }
         }
 
         @keyframes popIn { from{transform:scale(0.8);} to{transform:scale(1);} }
@@ -171,6 +199,55 @@
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 154, 154, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 154, 154, 0); }
         }
+
+        /* ✅ FIX 2: Dictionary Grid Layout */
+        .vocab-list { 
+            display: grid; 
+            gap: 15px; 
+            padding-bottom: 20px; 
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+            justify-content: center;
+        }
+
+        .vocab-card {
+            background: white; 
+            border-radius: 15px; 
+            padding: 15px;
+            text-align: center; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer; 
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .vocab-en { 
+            font-weight: bold; 
+            color: var(--primary-color); 
+            font-size: 1.1rem; 
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+
+        .vocab-he { 
+            color: #888; 
+            font-size: 0.9rem; 
+            margin-top: 5px;
+        }
+
+        .audio-hint {
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            margin-top: 8px;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -218,11 +295,17 @@
         </div>
     </div>
 
+    <!-- ✅ Warrior Wrapper exists here for Map Screen -->
     <div id="screen-map" class="screen" data-bg="מסך 2.png">
         <div class="top-bar">
             <button class="nav-btn" onclick="showScreen('screen-lobby')">🔙</button>
             <h3 style="margin:0;">מפת ההרפתקאות 🌲</h3>
         </div>
+
+        <div id="map-warrior-wrapper">
+             <img src="Princes1-bg.png" alt="Warrior">
+        </div>
+
         <div class="map-path" id="visual-map"></div>
         <div style="text-align:center; color:#fff; margin-top:10px;">
             לחצי על עיגול כדי להתחיל את השלב!
@@ -243,7 +326,7 @@
             <h3 style="margin:0;">המילון שלי 📖</h3>
         </div>
         <div style="padding: 10px; background: white; border-radius: 15px; margin-bottom: 15px;">
-            <small style="color:#888;">לחצי על כל מילה לשמוע אותה באנגלית!</small>
+            <small style="color:#888;">מילים שראית במשחק יופיעו כאן.</small>
         </div>
         <div id="vocab-list-container" class="vocab-list"></div>
     </div>
@@ -278,10 +361,11 @@
 
 </div>
 
+<!-- ✅ FIX 3: Modal is smaller, Big Star Removed (only confetti remains) -->
 <div id="level-complete-modal" class="success-modal" onclick="event.stopPropagation()">
     <div class="modal-box">
         <div class="confetti-container" id="confetti-wrapper"></div>
-        <div style="font-size:60px; margin-bottom:10px;">⭐</div>
+        <!-- The big star emoji was removed here as requested -->
         <h2 style="color:var(--accent-color); margin:0;">כל הכבוד!</h2>
         <p style="color:#666;">סיימת את שלב מספר <span id="completed-level-num">1</span></p>
         <p style="color:#666;">זכית ב-<b>50 גבישי אור!</b></p>
@@ -302,7 +386,6 @@
     </div>
 </div>
 
-<!-- ✅ FIXED MODAL - Now has proper structure -->
 <div id="purchase-modal" class="success-modal" onclick="if(event.target === this) closePurchaseModal()">
     <div class="modal-box">
         <!-- Content will be injected here by JS -->
@@ -680,7 +763,8 @@
         currentLevelId: 1,
         sessionWords: [],      
         wordIndex: 0,          
-        sessionStartedAt: null
+        sessionStartedAt: null,
+        seenWords: []          // ✅ FIX 4: Track words that have been answered correctly
     };
 
     function loadGame() {
@@ -693,6 +777,9 @@
                 if(!Array.isArray(gameState.unlockedLevels)) gameState.unlockedLevels = [1];
                 if(!Array.isArray(gameState.inventory)) gameState.inventory = [];
                 if(!Array.isArray(gameState.forestPlacements)) gameState.forestPlacements = [];
+
+                // Ensure backward compatibility for new feature
+                if(!Array.isArray(gameState.seenWords)) gameState.seenWords = []; 
 
                 console.log("✅ Game loaded successfully");
             } else {
@@ -830,6 +917,7 @@
         }
     }
 
+    // ✅ FIX 4: Add to seenWords on correct answer
     function checkAnswer(selectedItem, element) {
         try {
             const target = gameState.sessionWords[gameState.wordIndex];
@@ -844,6 +932,12 @@
                 element.style.transform = 'scale(1.05)';
 
                 gameState.crystals += 1;
+
+                // Track this word as "seen/learned"
+                if (!gameState.seenWords.some(w => w.en === selectedItem.en)) {
+                    gameState.seenWords.push(selectedItem);
+                }
+
                 saveGame();
 
                 speak("Excellent!");
@@ -963,57 +1057,78 @@
         showScreen('screen-lobby');
     }
 
+    // ✅ FIX 2: Dictionary only shows seen words with Grid Layout
     window.renderVocabularyList = function() {
         try {
             const container = document.getElementById('vocab-list-container');
             if(!container) return;
             container.innerHTML = '';
 
-            let allLearnedWords = [];
-            gameState.unlockedLevels.forEach(levelNum => {
-                const levelData = vocabularyBank['level'+levelNum] || [];
-                allLearnedWords = [...allLearnedWords, ...levelData];
-            });
+            // Use the tracked words
+            const allLearnedWords = gameState.seenWords; 
 
             if(allLearnedWords.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#888;">עדיין לא למדת מילים. התחליי לשחק בשלבים!</p>';
+                container.innerHTML = '<p style="text-align:center; color:#888; width:100%;">עדיין לא למדת מילים. התחליי לשחק בשלבים!</p>';
                 return;
             }
 
             allLearnedWords.forEach(wordObj => {
                 const card = document.createElement('div');
                 card.className = 'vocab-card';
+
+                // Add click listener for audio
                 card.addEventListener('click', () => speak(wordObj.en));
 
+                // Build the HTML structure matching v9.1 visual style
                 card.innerHTML = `
                     <div class="vocab-en">${wordObj.en}</div>
                     <div class="vocab-he">${wordObj.he}</div>
-                    <small style="color:var(--accent-color)">🔊 לחצי להשמעה</small>
+                    <div class="audio-hint">🔊 לחצו להשמעה</div>
                 `;
+
                 container.appendChild(card);
             });
+
+            console.log(`✅ Rendered ${allLearnedWords.length} vocab cards.`);
         } catch(e) {
             console.error("Error rendering vocab list:", e);
         }
-    }
+    };
 
+    // ✅ FIX 3: Adds small stars to completed levels on the map
     window.renderVisualMap = function() {
         try {
             const container = document.getElementById('visual-map');
             if(!container) return;
             container.innerHTML = '';
 
+            // Get the warrior wrapper element
+            const warriorWrapper = document.getElementById('map-warrior-wrapper');
+
             curriculum.forEach((lvl, idx) => {
                 const isUnlocked = gameState.unlockedLevels.includes(lvl.id);
-                const progress = idx / Math.max(curriculum.length - 1, 1);
-                const leftPercent = 5 + (progress * 90); 
-                const topPercent = 80 - (Math.sin(progress * Math.PI) * 50); 
 
+                // Calculate position logic (Vertical Stack)
+                const totalSteps = curriculum.length - 1;
+                const stepSize = (80 - 20) / totalSteps;
+                const topPercent = 20 + (idx * stepSize); 
+                const leftPercent = 50 + (Math.sin(idx) * 10); 
+
+                // Create the Marker Node
                 const node = document.createElement('div');
                 node.className = `level-node-map ${isUnlocked ? 'unlocked' : 'locked'}`;
                 node.style.left = `${leftPercent}%`;
                 node.style.top = `${topPercent}%`;
                 node.innerText = lvl.id;
+
+                // ✅ NEW LOGIC: Add a Star Badge if the level is COMPLETED (behind current level)
+                // We consider a level "completed" if the player has moved past it (Current Level > Target Level)
+                if(gameState.currentLevelId && gameState.currentLevelId > lvl.id) {
+                    const starBadge = document.createElement('span');
+                    starBadge.className = 'node-star-badge';
+                    starBadge.innerHTML = '★'; // Solid star character
+                    node.appendChild(starBadge);
+                }
 
                 const tooltip = document.createElement('span');
                 tooltip.className = 'level-tooltip';
@@ -1027,11 +1142,26 @@
                     });
                 }
                 container.appendChild(node);
+
+                // Move Warrior Wrapper based on Current Level
+                if(gameState.currentLevelId === lvl.id && warriorWrapper) {
+                    warriorWrapper.style.transition = "all 0.5s ease"; 
+                    warriorWrapper.style.left = `${leftPercent}%`;
+                    warriorWrapper.style.top = `${topPercent}%`;
+
+                    // Adjust vertical offset slightly so she stands ON the dot
+                    warriorWrapper.style.transform = `translate(-50%, -60%)`; 
+                }
             });
-        } catch(e) {
-            console.error("Error rendering map:", e);
-        }
-    }
+
+            // Default start pos
+            if(!gameState.currentLevelId && warriorWrapper) {
+                 warriorWrapper.style.left = '50%';
+                 warriorWrapper.style.top = '20%';
+            }
+
+        } catch(e) { console.error("Error rendering map:", e); }
+    };
 
     // ✅ FIXED SHOP RENDERING LOGIC WITH BETTER CLICK HANDLING
     window.renderShop = function() {
@@ -1068,7 +1198,7 @@
                     if(owned) {
                         btnHtml = `<button class="action-btn" style="background:#ccc; cursor:not-allowed;" disabled>בבעלותך</button>`;
                     } else {
-                         // ✅ Using onclick attribute directly for better reliability
+                         // Using onclick attribute directly for better reliability
                          btnHtml = `
                             <button class="action-btn btn-primary" onclick="attemptPurchase('${item.en}')">
                                 לקנות ב-${item.price} גבישים
