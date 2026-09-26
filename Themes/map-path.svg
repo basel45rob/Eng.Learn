@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" width="100" height="100">
+  <defs>
+    <linearGradient id="pathGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#f7e8c9"/>
+      <stop offset="100%" stop-color="#e3c896"/>
+    </linearGradient>
+  </defs>
+  <!-- Level nodes sit at left = 50 + sin(idx)*10 %, top = 20 + idx*20 % (4 levels):
+       (50,20) (58.4,40) (59.1,60) (50.3,80). Path passes through those points.
+       viewBox units = percent of the map container. -->
+  <path d="M 50 20
+           C 50 30, 58.4 32, 58.4 40
+           C 58.4 48, 59.1 52, 59.1 60
+           C 59.1 68, 50.3 72, 50.3 80"
+        fill="none" stroke="url(#pathGrad)" stroke-width="34" stroke-linecap="round"
+        vector-effect="non-scaling-stroke" opacity="0.95"/>
+  <path d="M 50 20
+           C 50 30, 58.4 32, 58.4 40
+           C 58.4 48, 59.1 52, 59.1 60
+           C 59.1 68, 50.3 72, 50.3 80"
+        fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+        stroke-dasharray="2 14" vector-effect="non-scaling-stroke" opacity="0.75"/>
+</svg>
