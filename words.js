@@ -33,69 +33,6 @@ window.WORDS = {
       "desc": "משחקים ובסיס",
       "words": [
         {
-          "en": "PLAY",
-          "he": "שחק",
-          "heN": "שָׂחָק",
-          "cat": "menu",
-          "tier": 1
-        },
-        {
-          "en": "START",
-          "he": "התחל",
-          "heN": "הִתְחִל",
-          "cat": "menu",
-          "tier": 1
-        },
-        {
-          "en": "STOP",
-          "he": "עצור",
-          "heN": "עֲצוֹר",
-          "cat": "menu",
-          "tier": 1
-        },
-        {
-          "en": "PAUSE",
-          "he": "השהה",
-          "heN": "הֵשֵׁהה",
-          "cat": "menu",
-          "tier": 1
-        },
-        {
-          "en": "LEVEL",
-          "he": "רמה",
-          "heN": "רָמָה",
-          "cat": "menu",
-          "tier": 1
-        },
-        {
-          "en": "OPTIONS",
-          "he": "אפשרויות",
-          "heN": "אֶפְשָׁרוּיוֹת",
-          "cat": "menu",
-          "tier": 3
-        },
-        {
-          "en": "SETTINGS",
-          "he": "הגדרות",
-          "heN": "הַגְּדָרוֹת",
-          "cat": "menu",
-          "tier": 3
-        },
-        {
-          "en": "EXIT",
-          "he": "יציאה",
-          "heN": "יְצִיאָה",
-          "cat": "menu",
-          "tier": 1
-        },
-        {
-          "en": "SAVE",
-          "he": "שמירה",
-          "heN": "שְׁמִירָה",
-          "cat": "menu",
-          "tier": 1
-        },
-        {
           "en": "LOAD",
           "he": "טעינה",
           "heN": "טְעִינָה",
@@ -105,7 +42,7 @@ window.WORDS = {
         {
           "en": "WIN",
           "he": "ניצחון",
-          "heN": "נִצְחוֹן",
+          "heN": "נִצָּחוֹן",
           "cat": "menu",
           "tier": 1
         },
@@ -126,7 +63,7 @@ window.WORDS = {
         {
           "en": "MENU",
           "he": "תפריט",
-          "heN": "תְּפָרִית",
+          "heN": "תַּפְרִיט",
           "cat": "menu",
           "tier": 1
         },
@@ -157,13 +94,6 @@ window.WORDS = {
           "heN": "שָׁלוֹם",
           "cat": "daily",
           "tier": 1
-        },
-        {
-          "en": "GOODBYE",
-          "he": "להתראות",
-          "heN": "לְהִתְרָאוֹת",
-          "cat": "daily",
-          "tier": 3
         },
         {
           "en": "PLEASE",
@@ -217,20 +147,6 @@ window.WORDS = {
           "tier": 1
         },
         {
-          "en": "FAST",
-          "he": "מהיר",
-          "heN": "מַהִיר",
-          "cat": "daily",
-          "tier": 3
-        },
-        {
-          "en": "SLOW",
-          "he": "איטי",
-          "heN": "אִטִּי",
-          "cat": "daily",
-          "tier": 3
-        },
-        {
           "en": "HOT",
           "he": "חם",
           "heN": "חַם",
@@ -243,20 +159,6 @@ window.WORDS = {
           "heN": "קָר",
           "cat": "daily",
           "tier": 1
-        },
-        {
-          "en": "HAPPY",
-          "he": "שמח",
-          "heN": "שָׂמֵחַ",
-          "cat": "daily",
-          "tier": 3
-        },
-        {
-          "en": "SAD",
-          "he": "עצוב",
-          "heN": "עֲצוּב",
-          "cat": "daily",
-          "tier": 3
         },
         {
           "en": "SUN",
@@ -301,20 +203,6 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "FOUR",
-          "he": "ארבעה",
-          "heN": "אַרְבָּעָה",
-          "cat": "numbers",
-          "tier": 3
-        },
-        {
-          "en": "FIVE",
-          "he": "חמישה",
-          "heN": "חֲמִישָׁה",
-          "cat": "numbers",
-          "tier": 3
-        },
-        {
           "en": "RED",
           "he": "אדום",
           "heN": "אָדוֹם",
@@ -336,25 +224,11 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "YELLOW",
-          "he": "צהוב",
-          "heN": "צְהוֹב",
-          "cat": "colors",
-          "tier": 3
-        },
-        {
           "en": "WHITE",
           "he": "לבן",
           "heN": "לָבָן",
           "cat": "colors",
           "tier": 2
-        },
-        {
-          "en": "Sunflower",
-          "he": "חמנייה",
-          "heN": "חַמָּנִיָּה",
-          "cat": "shop",
-          "tier": 3
         },
         {
           "en": "Cactus",
@@ -371,25 +245,11 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "Balloons",
-          "he": "בלונים",
-          "heN": "בָּלוֹנִים",
-          "cat": "shop",
-          "tier": 3
-        },
-        {
           "en": "Flags",
           "he": "דגלים",
           "heN": "דְּגָלִים",
           "cat": "shop",
           "tier": 2
-        },
-        {
-          "en": "Fireflies",
-          "he": "גחליליות",
-          "heN": "גַּחֲלִילִיוֹת",
-          "cat": "shop",
-          "tier": 3
         },
         {
           "en": "Magic Tree",
@@ -399,32 +259,151 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "Lavender",
-          "he": "לבנדר",
-          "heN": "לְבֶנְדֵר",
-          "cat": "shop",
-          "tier": 3
-        },
-        {
           "en": "Green Grass",
           "he": "דשא ירוק",
-          "heN": "דֶשָׁא יְרוּק",
+          "heN": "דֶּשֶׁא יָרֹוק",
           "cat": "shop",
           "tier": 2
         },
         {
           "en": "Big Mushroom",
           "he": "פטרייה גדולה",
-          "heN": "פַּטְרִיָּה גְדוֹלָה",
+          "heN": "פִּטְרִיָּה גְּדוֹלָה",
           "cat": "shop",
           "tier": 2
         },
         {
           "en": "White Rabbit",
           "he": "ארנב לבן",
-          "heN": "אַרְנֵב לָבָן",
+          "heN": "אַרְנָב לָבָן",
           "cat": "shop",
           "tier": 2
+        },
+        {
+          "en": "Fox",
+          "he": "שועל",
+          "heN": "שׁוּעָל",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "PLAY",
+          "he": "שחק",
+          "heN": "שַׂחֵק",
+          "cat": "menu",
+          "tier": 2
+        },
+        {
+          "en": "START",
+          "he": "התחל",
+          "heN": "הַתְחֵל",
+          "cat": "menu",
+          "tier": 2
+        },
+        {
+          "en": "STOP",
+          "he": "עצור",
+          "heN": "עֲצוֹר",
+          "cat": "menu",
+          "tier": 2
+        },
+        {
+          "en": "OPTIONS",
+          "he": "אפשרויות",
+          "heN": "אֶפְשָׁרוּיוֹת",
+          "cat": "menu",
+          "tier": 3
+        },
+        {
+          "en": "SETTINGS",
+          "he": "הגדרות",
+          "heN": "הַגְּדָרוֹת",
+          "cat": "menu",
+          "tier": 3
+        },
+        {
+          "en": "GOODBYE",
+          "he": "להתראות",
+          "heN": "לְהִתְרָאוֹת",
+          "cat": "daily",
+          "tier": 3
+        },
+        {
+          "en": "FAST",
+          "he": "מהיר",
+          "heN": "מַהִיר",
+          "cat": "daily",
+          "tier": 3
+        },
+        {
+          "en": "SLOW",
+          "he": "איטי",
+          "heN": "אִטִּי",
+          "cat": "daily",
+          "tier": 3
+        },
+        {
+          "en": "HAPPY",
+          "he": "שמח",
+          "heN": "שָׂמֵחַ",
+          "cat": "daily",
+          "tier": 3
+        },
+        {
+          "en": "SAD",
+          "he": "עצוב",
+          "heN": "עֲצוּב",
+          "cat": "daily",
+          "tier": 3
+        },
+        {
+          "en": "FOUR",
+          "he": "ארבעה",
+          "heN": "אַרְבָּעָה",
+          "cat": "numbers",
+          "tier": 3
+        },
+        {
+          "en": "FIVE",
+          "he": "חמישה",
+          "heN": "חֲמִישָׁה",
+          "cat": "numbers",
+          "tier": 3
+        },
+        {
+          "en": "YELLOW",
+          "he": "צהוב",
+          "heN": "צָהֹב",
+          "cat": "colors",
+          "tier": 3
+        },
+        {
+          "en": "Sunflower",
+          "he": "חמנייה",
+          "heN": "חַמָּנִיָּה",
+          "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "Balloons",
+          "he": "בלונים",
+          "heN": "בָּלוֹנִים",
+          "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "Fireflies",
+          "he": "גחליליות",
+          "heN": "גַּחֲלִילִיוֹת",
+          "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "Lavender",
+          "he": "לבנדר",
+          "heN": "ְלָבֶנְדֵּר",
+          "cat": "shop",
+          "tier": 3
         },
         {
           "en": "Squirrel",
@@ -434,11 +413,32 @@ window.WORDS = {
           "tier": 3
         },
         {
-          "en": "Fox",
-          "he": "שועל",
-          "heN": "שׁוֹעָל",
-          "cat": "shop",
-          "tier": 2
+          "en": "PAUSE",
+          "he": "השהה",
+          "heN": "הַשְׁהֵה",
+          "cat": "menu",
+          "tier": 3
+        },
+        {
+          "en": "LEVEL",
+          "he": "רמה",
+          "heN": "רָמָה",
+          "cat": "menu",
+          "tier": 3
+        },
+        {
+          "en": "EXIT",
+          "he": "יציאה",
+          "heN": "יְצִיאָה",
+          "cat": "menu",
+          "tier": 3
+        },
+        {
+          "en": "SAVE",
+          "he": "שמירה",
+          "heN": "שְׁמִירָה",
+          "cat": "menu",
+          "tier": 3
         }
       ]
     },
@@ -448,102 +448,11 @@ window.WORDS = {
       "desc": "היער הקסום",
       "words": [
         {
-          "en": "HOUSE",
-          "he": "בית",
-          "heN": "בַּיִת",
-          "cat": "home",
-          "tier": 1
-        },
-        {
-          "en": "DOOR",
-          "he": "דלת",
-          "heN": "דֶּלֶת",
-          "cat": "home",
-          "tier": 1
-        },
-        {
-          "en": "WINDOW",
-          "he": "חלון",
-          "heN": "חָלוֹן",
-          "cat": "home",
-          "tier": 2
-        },
-        {
-          "en": "BED",
-          "he": "מיטה",
-          "heN": "מִיטָה",
-          "cat": "home",
-          "tier": 1
-        },
-        {
-          "en": "TABLE",
-          "he": "שולחן",
-          "heN": "שֻׁלְחָן",
-          "cat": "home",
-          "tier": 1
-        },
-        {
-          "en": "CHAIR",
-          "he": "כיסא",
-          "heN": "כִּיסָא",
-          "cat": "home",
-          "tier": 1
-        },
-        {
-          "en": "COMPUTER",
-          "he": "מחשב",
-          "heN": "מַחְשֵׁב",
-          "cat": "home",
-          "tier": 3
-        },
-        {
-          "en": "PHONE",
-          "he": "טלפון",
-          "heN": "טֵלֶפוֹן",
-          "cat": "home",
-          "tier": 1
-        },
-        {
-          "en": "BOOK",
-          "he": "ספר",
-          "heN": "סֵפֶר",
-          "cat": "home",
-          "tier": 1
-        },
-        {
-          "en": "PEN",
-          "he": "עט",
-          "heN": "עֵט",
-          "cat": "home",
-          "tier": 1
-        },
-        {
           "en": "BAG",
           "he": "תיק",
-          "heN": "תֵּיק",
+          "heN": "תִּיק",
           "cat": "home",
           "tier": 1
-        },
-        {
-          "en": "CLOTHES",
-          "he": "בגדים",
-          "heN": "בִּגְדִים",
-          "cat": "home",
-          "tier": 2
-        },
-        {
-          "en": "SHOES",
-          "he": "נעליים",
-          "heN": "נַעֲלַיִם",
-          "cat": "home",
-          "tier": 2
-        },
-        {
-          "en": "SHIRT",
-          "he": "חולצה",
-          "heN": "חוֹלְצָה",
-          "cat": "home",
-          "tier": 2
         },
         {
           "en": "HAT",
@@ -569,7 +478,7 @@ window.WORDS = {
         {
           "en": "APPLE",
           "he": "תפוח",
-          "heN": "תְּפוּחַ",
+          "heN": "תַּפּוּחַ",
           "cat": "home",
           "tier": 1
         },
@@ -604,37 +513,16 @@ window.WORDS = {
         {
           "en": "LEAF",
           "he": "עלה",
-          "heN": "עָלָה",
+          "heN": "עָלֶה",
           "cat": "nature",
           "tier": 1
         },
         {
           "en": "GRASS",
           "he": "דשא",
-          "heN": "דֶשָׁא",
+          "heN": "דֶּשֶׁא",
           "cat": "nature",
           "tier": 1
-        },
-        {
-          "en": "FOREST",
-          "he": "יער",
-          "heN": "יָעָר",
-          "cat": "nature",
-          "tier": 3
-        },
-        {
-          "en": "SKY",
-          "he": "שמיים",
-          "heN": "שָׁמַיִם",
-          "cat": "nature",
-          "tier": 2
-        },
-        {
-          "en": "CLOUD",
-          "he": "ענן",
-          "heN": "עָנָן",
-          "cat": "nature",
-          "tier": 2
         },
         {
           "en": "RAIN",
@@ -642,34 +530,6 @@ window.WORDS = {
           "heN": "גֶּשֶׁם",
           "cat": "nature",
           "tier": 1
-        },
-        {
-          "en": "SNOW",
-          "he": "שלג",
-          "heN": "שֶׁלֶג",
-          "cat": "nature",
-          "tier": 2
-        },
-        {
-          "en": "STONE",
-          "he": "אבן",
-          "heN": "אֶבֶן",
-          "cat": "nature",
-          "tier": 2
-        },
-        {
-          "en": "RIVER",
-          "he": "נהר",
-          "heN": "נָהָר",
-          "cat": "nature",
-          "tier": 2
-        },
-        {
-          "en": "ANIMAL",
-          "he": "חיה",
-          "heN": "חִיָּה",
-          "cat": "nature",
-          "tier": 3
         },
         {
           "en": "DOG",
@@ -702,7 +562,7 @@ window.WORDS = {
         {
           "en": "HORSE",
           "he": "סוס",
-          "heN": "סוֹס",
+          "heN": "סוּס",
           "cat": "nature",
           "tier": 1
         },
@@ -721,32 +581,11 @@ window.WORDS = {
           "tier": 1
         },
         {
-          "en": "WOLF",
-          "he": "זאב",
-          "heN": "זָאֵב",
-          "cat": "nature",
-          "tier": 3
-        },
-        {
-          "en": "BODY",
-          "he": "גוף",
-          "heN": "גּוּף",
-          "cat": "body",
-          "tier": 3
-        },
-        {
           "en": "HEAD",
           "he": "ראש",
           "heN": "רֹאשׁ",
           "cat": "body",
           "tier": 1
-        },
-        {
-          "en": "FACE",
-          "he": "פנים",
-          "heN": "פָּנִים",
-          "cat": "body",
-          "tier": 2
         },
         {
           "en": "EYE",
@@ -756,13 +595,6 @@ window.WORDS = {
           "tier": 1
         },
         {
-          "en": "EAR",
-          "he": "אוזניים",
-          "heN": "אוֹזְנַיִם",
-          "cat": "body",
-          "tier": 2
-        },
-        {
           "en": "NOSE",
           "he": "אף",
           "heN": "אַף",
@@ -770,9 +602,65 @@ window.WORDS = {
           "tier": 1
         },
         {
+          "en": "SHIRT",
+          "he": "חולצה",
+          "heN": "חֻלְצָה",
+          "cat": "home",
+          "tier": 2
+        },
+        {
+          "en": "SKY",
+          "he": "שמיים",
+          "heN": "שָׁמַיִם",
+          "cat": "nature",
+          "tier": 2
+        },
+        {
+          "en": "CLOUD",
+          "he": "ענן",
+          "heN": "עָנָן",
+          "cat": "nature",
+          "tier": 2
+        },
+        {
+          "en": "SNOW",
+          "he": "שלג",
+          "heN": "שֶׁלֶג",
+          "cat": "nature",
+          "tier": 2
+        },
+        {
+          "en": "STONE",
+          "he": "אבן",
+          "heN": "אֶבֶן",
+          "cat": "nature",
+          "tier": 2
+        },
+        {
+          "en": "RIVER",
+          "he": "נהר",
+          "heN": "נָהָר",
+          "cat": "nature",
+          "tier": 2
+        },
+        {
+          "en": "FACE",
+          "he": "פנים",
+          "heN": "פָּנִים",
+          "cat": "body",
+          "tier": 2
+        },
+        {
+          "en": "EAR",
+          "he": "אוזניים",
+          "heN": "אוֹזְנַיִם",
+          "cat": "body",
+          "tier": 2
+        },
+        {
           "en": "MOUTH",
           "he": "פה",
-          "heN": "פֹּה",
+          "heN": "פֶּה",
           "cat": "body",
           "tier": 2
         },
@@ -791,13 +679,6 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "FINGER",
-          "he": "אצבע",
-          "heN": "אֶצְבַּע",
-          "cat": "body",
-          "tier": 3
-        },
-        {
           "en": "HAIR",
           "he": "שיער",
           "heN": "שֵׂעָר",
@@ -810,20 +691,6 @@ window.WORDS = {
           "heN": "לֵב",
           "cat": "body",
           "tier": 2
-        },
-        {
-          "en": "SMILE",
-          "he": "חיוך",
-          "heN": "חִיוָךְ",
-          "cat": "body",
-          "tier": 3
-        },
-        {
-          "en": "VOICE",
-          "he": "קול",
-          "heN": "קוֹל",
-          "cat": "body",
-          "tier": 3
         },
         {
           "en": "NAME",
@@ -842,37 +709,16 @@ window.WORDS = {
         {
           "en": "Golden Butterfly",
           "he": "פרפר זהוב",
-          "heN": "פַּרְפֵּר זָהוּב",
+          "heN": "פַּרְפַּר זָהֹב",
           "cat": "shop",
           "tier": 2
         },
         {
           "en": "Small Owl",
           "he": "ינשוף קטן",
-          "heN": "יְנֵשׁוֹף קָטָן",
+          "heN": "יַנְשׁוּף קָטָן",
           "cat": "shop",
           "tier": 2
-        },
-        {
-          "en": "Unicorn",
-          "he": "חד קרן",
-          "heN": "חַד קֶרֶן",
-          "cat": "shop",
-          "tier": 3
-        },
-        {
-          "en": "Deer",
-          "he": "איילה",
-          "heN": "אֵילָה",
-          "cat": "shop",
-          "tier": 3
-        },
-        {
-          "en": "Penguin",
-          "he": "פינגווין",
-          "heN": "פִּינְגְוִין",
-          "cat": "shop",
-          "tier": 3
         },
         {
           "en": "Bear Cub",
@@ -915,6 +761,160 @@ window.WORDS = {
           "heN": "בַּיִת עַל הָעֵץ",
           "cat": "shop",
           "tier": 2
+        },
+        {
+          "en": "COMPUTER",
+          "he": "מחשב",
+          "heN": "מַחְשֵׁב",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "FOREST",
+          "he": "יער",
+          "heN": "יָעָר",
+          "cat": "nature",
+          "tier": 3
+        },
+        {
+          "en": "ANIMAL",
+          "he": "חיה",
+          "heN": "חַיָּה",
+          "cat": "nature",
+          "tier": 3
+        },
+        {
+          "en": "WOLF",
+          "he": "זאב",
+          "heN": "זְאֵב",
+          "cat": "nature",
+          "tier": 3
+        },
+        {
+          "en": "BODY",
+          "he": "גוף",
+          "heN": "גּוּף",
+          "cat": "body",
+          "tier": 3
+        },
+        {
+          "en": "FINGER",
+          "he": "אצבע",
+          "heN": "אֶצְבַּע",
+          "cat": "body",
+          "tier": 3
+        },
+        {
+          "en": "SMILE",
+          "he": "חיוך",
+          "heN": "חִיּוּךְ",
+          "cat": "body",
+          "tier": 3
+        },
+        {
+          "en": "VOICE",
+          "he": "קול",
+          "heN": "קוֹל",
+          "cat": "body",
+          "tier": 3
+        },
+        {
+          "en": "Unicorn",
+          "he": "חד קרן",
+          "heN": "חַד קֶרֶן",
+          "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "Deer",
+          "he": "איילה",
+          "heN": "אַיָּלָה",
+          "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "Penguin",
+          "he": "פינגווין",
+          "heN": "פִּינְגְוִין",
+          "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "HOUSE",
+          "he": "בית",
+          "heN": "בַּיִת",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "DOOR",
+          "he": "דלת",
+          "heN": "דֶּלֶת",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "BED",
+          "he": "מיטה",
+          "heN": "מִיטָה",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "TABLE",
+          "he": "שולחן",
+          "heN": "שֻׁלְחָן",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "CHAIR",
+          "he": "כיסא",
+          "heN": "כִּסֵּא",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "PHONE",
+          "he": "טלפון",
+          "heN": "טֵלֶפוֹן",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "BOOK",
+          "he": "ספר",
+          "heN": "סֵפֶר",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "PEN",
+          "he": "עט",
+          "heN": "עֵט",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "WINDOW",
+          "he": "חלון",
+          "heN": "חָלוֹן",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "CLOTHES",
+          "he": "בגדים",
+          "heN": "בִּגְדִים",
+          "cat": "home",
+          "tier": 3
+        },
+        {
+          "en": "SHOES",
+          "he": "נעליים",
+          "heN": "נַעֲלַיִם",
+          "cat": "home",
+          "tier": 3
         }
       ]
     },
@@ -924,86 +924,9 @@ window.WORDS = {
       "desc": "פעולות",
       "words": [
         {
-          "en": "DO",
-          "he": "לעשות",
-          "heN": "לַעֲשׂוֹת",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "GO",
-          "he": "ללכת",
-          "heN": "לָלֶכֶת",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "COME",
-          "he": "לבוא",
-          "heN": "לְבוֹא",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "SEE",
-          "he": "לראות",
-          "heN": "לִרְאוֹת",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "LOOK",
-          "he": "להביט",
-          "heN": "לְהַבִּיט",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "HEAR",
-          "he": "לשמע",
-          "heN": "לִשְׁמוֹעַ",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "LISTEN",
-          "he": "להקשיב",
-          "heN": "לְהַקְשִׁיב",
-          "cat": "action",
-          "tier": 3
-        },
-        {
-          "en": "EAT",
-          "he": "לאכול",
-          "heN": "לֶאֱכוֹל",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "DRINK",
-          "he": "לשתות",
-          "heN": "לִשְׁתּוֹת",
-          "cat": "action",
-          "tier": 1
-        },
-        {
           "en": "SLEEP",
           "he": "לישון",
           "heN": "לִישּׁוֹן",
-          "cat": "action",
-          "tier": 1
-        },
-        {
-          "en": "WAKE UP",
-          "he": "לקום",
-          "heN": "לָקוּם",
-          "cat": "action",
-          "tier": 2
-        },
-        {
-          "en": "PLAY",
-          "he": "לשחק",
-          "heN": "לִשְׂחֹק",
           "cat": "action",
           "tier": 1
         },
@@ -1017,7 +940,7 @@ window.WORDS = {
         {
           "en": "WALK",
           "he": "לצעוד",
-          "heN": "לְצַעֵד",
+          "heN": "לִצְעֹד",
           "cat": "action",
           "tier": 1
         },
@@ -1057,6 +980,129 @@ window.WORDS = {
           "tier": 1
         },
         {
+          "en": "READ",
+          "he": "לקרוא",
+          "heN": "לִקְרוֹא",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "WRITE",
+          "he": "לכתוב",
+          "heN": "לִכְתֹּב",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "DRAW",
+          "he": "לצייר",
+          "heN": "לְצַיֵּר",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "OPEN",
+          "he": "לפתוח",
+          "heN": "לִפְתֹּחַ",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "CLOSE",
+          "he": "לסגור",
+          "heN": "לִסְגֹּר",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "FIND",
+          "he": "למצוא",
+          "heN": "לִמְצוֹא",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "GIVE",
+          "he": "לתת",
+          "heN": "לָתֵת",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "TAKE",
+          "he": "לקחת",
+          "heN": "לָקַחַת",
+          "cat": "learning",
+          "tier": 1
+        },
+        {
+          "en": "LIKE",
+          "he": "אני אוהבת",
+          "heM": "אני אוהב",
+          "heN": "אֲנִי אוֹהֶבֶת",
+          "heNM": "אֲנִי אוֹהֵב",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "LOVE",
+          "he": "אהבה",
+          "heN": "אַהֲבָה",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "WANT",
+          "he": "לרצות",
+          "heN": "לִרְצוֹת",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "NEED",
+          "he": "צריכה",
+          "heM": "צריך",
+          "heN": "צְרִיכָה",
+          "heNM": "צָרִיךְ",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "FEEL",
+          "he": "להרגיש",
+          "heN": "לְהַרְגִּישׁ",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "FUNNY",
+          "he": "מצחיק",
+          "heN": "מַצְחִיק",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "GREAT",
+          "he": "נהדר",
+          "heN": "נֶהֱדָר",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "COOL",
+          "he": "מדהים",
+          "heN": "מַדְהִים",
+          "cat": "emotion",
+          "tier": 1
+        },
+        {
+          "en": "WAKE UP",
+          "he": "לקום",
+          "heN": "לָקוּם",
+          "cat": "action",
+          "tier": 2
+        },
+        {
           "en": "TELL",
           "he": "לספר",
           "heN": "לְסַפֵּר",
@@ -1069,13 +1115,6 @@ window.WORDS = {
           "heN": "לִשְׁאֹל",
           "cat": "action",
           "tier": 2
-        },
-        {
-          "en": "ANSWER",
-          "he": "להשיב",
-          "heN": "לְהַשִּׁיב",
-          "cat": "action",
-          "tier": 3
         },
         {
           "en": "WORK",
@@ -1099,27 +1138,6 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "READ",
-          "he": "לקרוא",
-          "heN": "לִקְרוֹא",
-          "cat": "learning",
-          "tier": 1
-        },
-        {
-          "en": "WRITE",
-          "he": "לכתוב",
-          "heN": "לִכְתֹּב",
-          "cat": "learning",
-          "tier": 1
-        },
-        {
-          "en": "DRAW",
-          "he": "לצייר",
-          "heN": "לְצַיֵּר",
-          "cat": "learning",
-          "tier": 1
-        },
-        {
           "en": "PAINT",
           "he": "לצבוע",
           "heN": "לִצְבּוֹעַ",
@@ -1134,27 +1152,6 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "OPEN",
-          "he": "לפתוח",
-          "heN": "לִפְתֹּחַ",
-          "cat": "learning",
-          "tier": 1
-        },
-        {
-          "en": "CLOSE",
-          "he": "לסגור",
-          "heN": "לְסָגוֹר",
-          "cat": "learning",
-          "tier": 1
-        },
-        {
-          "en": "FIND",
-          "he": "למצוא",
-          "heN": "לִמְצוֹא",
-          "cat": "learning",
-          "tier": 1
-        },
-        {
           "en": "HIDE",
           "he": "להסתיר",
           "heN": "לְהַסְתִּיר",
@@ -1162,18 +1159,123 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "GIVE",
-          "he": "לתת",
-          "heN": "לָתֵת",
+          "en": "MAKE",
+          "he": "להכין",
+          "heN": "לְהָכִין",
           "cat": "learning",
-          "tier": 1
+          "tier": 2
         },
         {
-          "en": "TAKE",
-          "he": "לקחת",
-          "heN": "לְקַחַת",
+          "en": "USE",
+          "he": "להשתמש",
+          "heN": "לְהִשְׁתַּמֵּשׁ",
           "cat": "learning",
-          "tier": 1
+          "tier": 2
+        },
+        {
+          "en": "Glowing Rose",
+          "he": "ורד זוהר",
+          "heN": "וֶרֶד זֹהַר",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Crystal Bush",
+          "he": "שיח קריסטל",
+          "heN": "שִׁיחַ קְרִיסְטָל",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Blue Fairy",
+          "he": "פיה כחולה",
+          "heN": "פֵיָה כְּחֻלָּה",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Dragon Baby",
+          "he": "תינוק דרקון",
+          "heN": "תִּינוֹק דְּרָקוֹן",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Elf Girl",
+          "he": "ילדת אלף",
+          "heN": "יַלְדַּת אֶלְף",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Frog Prince",
+          "he": "נסיך הצפרדע",
+          "heN": "נְסִיךְ הַצְּפַרְדֵּעַ",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Butterfly Queen",
+          "he": "מלכת הפרפרים",
+          "heN": "מַלְכַּת הַפַּרְפְּרִים",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Castle Tower",
+          "he": "מצודת טירה",
+          "heN": "מְצוּדַת טִירָה",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Crystal Cave",
+          "he": "מערת קריסטל",
+          "heN": "מֵעָרַת קְרִיסְטָל",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "Magic Well",
+          "he": "באר קסומה",
+          "heN": "בְּאֵר קְסוּמָה",
+          "cat": "shop",
+          "tier": 2
+        },
+        {
+          "en": "PLAY",
+          "he": "לשחק",
+          "heN": "לִשְׂחֹק",
+          "cat": "action",
+          "tier": 2
+        },
+        {
+          "en": "DO",
+          "he": "לעשות",
+          "heN": "לַעֲשׂוֹת",
+          "cat": "action",
+          "tier": 2
+        },
+        {
+          "en": "GO",
+          "he": "ללכת",
+          "heN": "לָלֶכֶת",
+          "cat": "action",
+          "tier": 2
+        },
+        {
+          "en": "LISTEN",
+          "he": "להקשיב",
+          "heN": "לְהַקְשִׁיב",
+          "cat": "action",
+          "tier": 3
+        },
+        {
+          "en": "ANSWER",
+          "he": "להשיב",
+          "heN": "לְהַשִּׁיב",
+          "cat": "action",
+          "tier": 3
         },
         {
           "en": "LEARN",
@@ -1225,59 +1327,6 @@ window.WORDS = {
           "tier": 3
         },
         {
-          "en": "MAKE",
-          "he": "להכין",
-          "heN": "לְהָכִין",
-          "cat": "learning",
-          "tier": 2
-        },
-        {
-          "en": "USE",
-          "he": "להשתמש",
-          "heN": "לְהִשְׁתַּמֵּשׁ",
-          "cat": "learning",
-          "tier": 2
-        },
-        {
-          "en": "LIKE",
-          "he": "אני אוהבת",
-          "heM": "אני אוהב",
-          "heN": "אֲנִי אוֹהֶבֶת",
-          "heNM": "אֲנִי אוֹהֵב",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
-          "en": "LOVE",
-          "he": "אהבה",
-          "heN": "אַהֲבָה",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
-          "en": "WANT",
-          "he": "לרצות",
-          "heN": "לִרְצוֹת",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
-          "en": "NEED",
-          "he": "צריכה",
-          "heM": "צריך",
-          "heN": "צְרִיכָה",
-          "heNM": "צְרִיךְ",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
-          "en": "FEEL",
-          "he": "להרגיש",
-          "heN": "לְהַרְגִּישׁ",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
           "en": "HUNGRY",
           "he": "רעבה",
           "heM": "רעב",
@@ -1291,7 +1340,7 @@ window.WORDS = {
           "he": "צמאה",
           "heM": "צמא",
           "heN": "צֵמָאָה",
-          "heNM": "צֵמָא",
+          "heNM": "צָמֵא",
           "cat": "emotion",
           "tier": 3
         },
@@ -1332,88 +1381,11 @@ window.WORDS = {
           "tier": 3
         },
         {
-          "en": "FUNNY",
-          "he": "מצחיק",
-          "heN": "מַצְחִיק",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
           "en": "BEAUTIFUL",
           "he": "יפה",
           "heN": "יָפֶה",
           "cat": "emotion",
           "tier": 3
-        },
-        {
-          "en": "GREAT",
-          "he": "נהדר",
-          "heN": "נֹהֵדֵר",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
-          "en": "COOL",
-          "he": "מדהים",
-          "heN": "מַדְהִים",
-          "cat": "emotion",
-          "tier": 1
-        },
-        {
-          "en": "Glowing Rose",
-          "he": "ורד זוהר",
-          "heN": "וֹרַד זוֹהַר",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Crystal Bush",
-          "he": "שיח קריסטל",
-          "heN": "שִׁיחַ קְרִיסְטָל",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Blue Fairy",
-          "he": "פיה כחולה",
-          "heN": "פִיָּה כְּחוֹלָה",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Dragon Baby",
-          "he": "תינוק דרקון",
-          "heN": "תֵּינוֹק דְּרָכוֹן",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Elf Girl",
-          "he": "ילדת אלף",
-          "heN": "יְלָדַת אֶלֶף",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Frog Prince",
-          "he": "נסיך הצפרדע",
-          "heN": "נְסִיךְ הַצְּפַרְדְּעָה",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Butterfly Queen",
-          "he": "מלכת הפרפרים",
-          "heN": "מַלְכַּת הַפַּרְפְּרִים",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Castle Tower",
-          "he": "מצודת טירה",
-          "heN": "מִצוּדַת טִירָה",
-          "cat": "shop",
-          "tier": 2
         },
         {
           "en": "Windmill",
@@ -1423,24 +1395,52 @@ window.WORDS = {
           "tier": 3
         },
         {
-          "en": "Crystal Cave",
-          "he": "מערת קריסטל",
-          "heN": "מֵעָרַת קְרִיסְטָל",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
-          "en": "Magic Well",
-          "he": "באר קסומה",
-          "heN": "בְּאֵר קְסוּמָה",
-          "cat": "shop",
-          "tier": 2
-        },
-        {
           "en": "Gazebo",
           "he": "מבנה גינון",
           "heN": "מִבְנֵה גִּינוּן",
           "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "COME",
+          "he": "לבוא",
+          "heN": "לְבוֹא",
+          "cat": "action",
+          "tier": 3
+        },
+        {
+          "en": "SEE",
+          "he": "לראות",
+          "heN": "לִרְאוֹת",
+          "cat": "action",
+          "tier": 3
+        },
+        {
+          "en": "LOOK",
+          "he": "להביט",
+          "heN": "לְהַבִּיט",
+          "cat": "action",
+          "tier": 3
+        },
+        {
+          "en": "HEAR",
+          "he": "לשמע",
+          "heN": "לִשְׁמוֹעַ",
+          "cat": "action",
+          "tier": 3
+        },
+        {
+          "en": "EAT",
+          "he": "לאכול",
+          "heN": "לֶאֱכוֹל",
+          "cat": "action",
+          "tier": 3
+        },
+        {
+          "en": "DRINK",
+          "he": "לשתות",
+          "heN": "לִשְׁתּוֹת",
+          "cat": "action",
           "tier": 3
         }
       ]
@@ -1450,55 +1450,6 @@ window.WORDS = {
       "title": "שלב 4",
       "desc": "שירים וזמן",
       "words": [
-        {
-          "en": "AND",
-          "he": "וגם",
-          "heN": "וְגַם",
-          "cat": "connectors",
-          "tier": 1
-        },
-        {
-          "en": "OR",
-          "he": "או",
-          "heN": "אוֹ",
-          "cat": "connectors",
-          "tier": 1
-        },
-        {
-          "en": "BUT",
-          "he": "אבל",
-          "heN": "אַבָּל",
-          "cat": "connectors",
-          "tier": 1
-        },
-        {
-          "en": "BECAUSE",
-          "he": "כי",
-          "heN": "כִּי",
-          "cat": "connectors",
-          "tier": 3
-        },
-        {
-          "en": "WITH",
-          "he": "עם",
-          "heN": "עִם",
-          "cat": "connectors",
-          "tier": 1
-        },
-        {
-          "en": "FOR",
-          "he": "עבור",
-          "heN": "עֲבוּר",
-          "cat": "connectors",
-          "tier": 1
-        },
-        {
-          "en": "WHO",
-          "he": "מי",
-          "heN": "מִי",
-          "cat": "questions",
-          "tier": 1
-        },
         {
           "en": "WHAT",
           "he": "מה",
@@ -1563,6 +1514,104 @@ window.WORDS = {
           "tier": 1
         },
         {
+          "en": "DAY",
+          "he": "יום",
+          "heN": "יוֹם",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "NIGHT",
+          "he": "לילה",
+          "heN": "לַיְלָה",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "TODAY",
+          "he": "היום",
+          "heN": "הַיּוֹם",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "NEW",
+          "he": "חדש",
+          "heN": "חָדָשׁ",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "OLD",
+          "he": "ישן",
+          "heN": "יָשָׁן",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "FIRST",
+          "he": "ראשון",
+          "heN": "רִאשׁוֹן",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "LAST",
+          "he": "אחרון",
+          "heN": "אַחֲרוֹן",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "END",
+          "he": "סוף",
+          "heN": "סוֹף",
+          "cat": "time",
+          "tier": 1
+        },
+        {
+          "en": "FIRE",
+          "he": "אש",
+          "heN": "אֵשׁ",
+          "cat": "songs",
+          "tier": 1
+        },
+        {
+          "en": "LIGHT",
+          "he": "אור",
+          "heN": "אוֹר",
+          "cat": "songs",
+          "tier": 1
+        },
+        {
+          "en": "DARK",
+          "he": "חושך",
+          "heN": "חֹשֶׁךְ",
+          "cat": "songs",
+          "tier": 1
+        },
+        {
+          "en": "STAR",
+          "he": "כוכב",
+          "heN": "כֹּכָב",
+          "cat": "songs",
+          "tier": 1
+        },
+        {
+          "en": "HOME",
+          "he": "בית",
+          "heN": "בַּיִת",
+          "cat": "songs",
+          "tier": 1
+        },
+        {
+          "en": "MUSIC",
+          "he": "מוזיקה",
+          "heN": "מוּזִיקָה",
+          "cat": "songs",
+          "tier": 1
+        },
+        {
           "en": "ALL",
           "he": "כל",
           "heN": "כָּל",
@@ -1598,123 +1647,11 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "DAY",
-          "he": "יום",
-          "heN": "יוֹם",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "NIGHT",
-          "he": "לילה",
-          "heN": "לַיְלָה",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "MORNING",
-          "he": "בוקר",
-          "heN": "בֹּקֶר",
-          "cat": "time",
-          "tier": 3
-        },
-        {
-          "en": "EVENING",
-          "he": "ערב",
-          "heN": "עֶרֶב",
-          "cat": "time",
-          "tier": 3
-        },
-        {
-          "en": "TODAY",
-          "he": "היום",
-          "heN": "הַיּוֹם",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "TOMORROW",
-          "he": "מחר",
-          "heN": "מָחָר",
-          "cat": "time",
-          "tier": 3
-        },
-        {
           "en": "NOW",
           "he": "עכשיו",
           "heN": "עַכְשָׁיו",
           "cat": "time",
           "tier": 2
-        },
-        {
-          "en": "LATER",
-          "he": "מאוחר יותר",
-          "heN": "מְאוּחָר יוֹתֵר",
-          "cat": "time",
-          "tier": 3
-        },
-        {
-          "en": "ALWAYS",
-          "he": "תמיד",
-          "heN": "תָּמִיד",
-          "cat": "time",
-          "tier": 3
-        },
-        {
-          "en": "NEVER",
-          "he": "לעולם לא",
-          "heN": "לְעוֹלָם לֹא",
-          "cat": "time",
-          "tier": 3
-        },
-        {
-          "en": "NEW",
-          "he": "חדש",
-          "heN": "חָדָשׁ",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "OLD",
-          "he": "ישן",
-          "heN": "יָשָׁן",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "FIRST",
-          "he": "ראשון",
-          "heN": "רִאשׁוֹן",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "LAST",
-          "he": "אחרון",
-          "heN": "אַחֲרוֹן",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "BEGINNING",
-          "he": "תחילת",
-          "heN": "תְּחִלַּת",
-          "cat": "time",
-          "tier": 3
-        },
-        {
-          "en": "END",
-          "he": "סוף",
-          "heN": "סוֹף",
-          "cat": "time",
-          "tier": 1
-        },
-        {
-          "en": "EARLY",
-          "he": "מוקדם",
-          "heN": "מוּקְדָם",
-          "cat": "time",
-          "tier": 3
         },
         {
           "en": "LATE",
@@ -1726,7 +1663,7 @@ window.WORDS = {
         {
           "en": "SOON",
           "he": "בקרוב",
-          "heN": "בִּקְרוֹב",
+          "heN": "בְּקָרוֹב",
           "cat": "time",
           "tier": 2
         },
@@ -1738,13 +1675,6 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "WORLD",
-          "he": "עולם",
-          "heN": "עוֹלָם",
-          "cat": "songs",
-          "tier": 3
-        },
-        {
           "en": "DREAM",
           "he": "חלום",
           "heN": "חֲלוֹם",
@@ -1752,88 +1682,11 @@ window.WORDS = {
           "tier": 2
         },
         {
-          "en": "HEART",
-          "he": "לב",
-          "heN": "לֵב",
-          "cat": "songs",
-          "tier": 1
-        },
-        {
-          "en": "SOUL",
-          "he": "נשמה",
-          "heN": "נֶשֶׁמָה",
-          "cat": "songs",
-          "tier": 3
-        },
-        {
-          "en": "FIRE",
-          "he": "אש",
-          "heN": "אֵשׁ",
-          "cat": "songs",
-          "tier": 1
-        },
-        {
-          "en": "LIGHT",
-          "he": "אור",
-          "heN": "אוֹר",
-          "cat": "songs",
-          "tier": 1
-        },
-        {
-          "en": "DARK",
-          "he": "חושך",
-          "heN": "חֹשֶׁךְ",
-          "cat": "songs",
-          "tier": 1
-        },
-        {
-          "en": "STAR",
-          "he": "כוכב",
-          "heN": "כֹּכָב",
-          "cat": "songs",
-          "tier": 1
-        },
-        {
-          "en": "TOGETHER",
-          "he": "יחד",
-          "heN": "יַחַד",
-          "cat": "songs",
-          "tier": 3
-        },
-        {
           "en": "ALONE",
           "he": "לבד",
           "heN": "לְבַד",
           "cat": "songs",
           "tier": 2
-        },
-        {
-          "en": "FOREVER",
-          "he": "לנצח",
-          "heN": "לְנֵצַח",
-          "cat": "songs",
-          "tier": 3
-        },
-        {
-          "en": "HOME",
-          "he": "בית",
-          "heN": "בַּיִת",
-          "cat": "songs",
-          "tier": 1
-        },
-        {
-          "en": "FRIENDS",
-          "he": "חברים",
-          "heN": "חֲבֵרִים",
-          "cat": "songs",
-          "tier": 3
-        },
-        {
-          "en": "MUSIC",
-          "he": "מוזיקה",
-          "heN": "מוּזִיקָה",
-          "cat": "songs",
-          "tier": 1
         },
         {
           "en": "Hanging Lantern",
@@ -1859,14 +1712,14 @@ window.WORDS = {
         {
           "en": "Moonlight Beam",
           "he": "קרן ירח",
-          "heN": "קַרְנַת יָרֵחַ",
+          "heN": "קֶרֶן יָרֵחַ",
           "cat": "shop",
           "tier": 2
         },
         {
           "en": "Sparkle Dust",
           "he": "אבק זוהר",
-          "heN": "אֵבֶק זוֹהַר",
+          "heN": "אָבָק זוֹהֵר",
           "cat": "shop",
           "tier": 2
         },
@@ -1880,7 +1733,7 @@ window.WORDS = {
         {
           "en": "Gold Coins",
           "he": "מטבעות זהב",
-          "heN": "מַטְבְּעוֹת זֶהַב",
+          "heN": "מַטְבְּעוֹת זָהָב",
           "cat": "shop",
           "tier": 2
         },
@@ -1901,23 +1754,16 @@ window.WORDS = {
         {
           "en": "Magic Wand",
           "he": "שבט קסמים",
-          "heN": "שֵׁבֶט קַסְמִים",
+          "heN": "שֵׁבֶט קְסָמִים",
           "cat": "shop",
           "tier": 2
         },
         {
           "en": "Golden Key",
           "he": "מפתח זהב",
-          "heN": "מִפְתַּח זֶהַב",
+          "heN": "מַפְתֵּחַ זָהָב",
           "cat": "shop",
           "tier": 2
-        },
-        {
-          "en": "Compass",
-          "he": "מצפן",
-          "heN": "מִצְפָּן",
-          "cat": "shop",
-          "tier": 3
         },
         {
           "en": "Map Scroll",
@@ -1925,6 +1771,118 @@ window.WORDS = {
           "heN": "מַפָּה עַתִּיקָה",
           "cat": "shop",
           "tier": 2
+        },
+        {
+          "en": "HEART",
+          "he": "לב",
+          "heN": "לֵב",
+          "cat": "songs",
+          "tier": 2
+        },
+        {
+          "en": "BECAUSE",
+          "he": "כי",
+          "heN": "כִּי",
+          "cat": "connectors",
+          "tier": 3
+        },
+        {
+          "en": "MORNING",
+          "he": "בוקר",
+          "heN": "בֹּקֶר",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "EVENING",
+          "he": "ערב",
+          "heN": "עֶרֶב",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "TOMORROW",
+          "he": "מחר",
+          "heN": "מָחָר",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "LATER",
+          "he": "מאוחר יותר",
+          "heN": "מְאוּחָר יוֹתֵר",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "ALWAYS",
+          "he": "תמיד",
+          "heN": "תָּמִיד",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "NEVER",
+          "he": "לעולם לא",
+          "heN": "לְעוֹלָם לֹא",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "BEGINNING",
+          "he": "התחלה",
+          "heN": "הַתְחָלָה",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "EARLY",
+          "he": "מוקדם",
+          "heN": "מוּקְדָם",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "WORLD",
+          "he": "עולם",
+          "heN": "עוֹלָם",
+          "cat": "songs",
+          "tier": 3
+        },
+        {
+          "en": "SOUL",
+          "he": "נשמה",
+          "heN": "נֶשֶׁמָה",
+          "cat": "songs",
+          "tier": 3
+        },
+        {
+          "en": "TOGETHER",
+          "he": "יחד",
+          "heN": "יַחַד",
+          "cat": "songs",
+          "tier": 3
+        },
+        {
+          "en": "FOREVER",
+          "he": "לנצח",
+          "heN": "לָנֶצַח",
+          "cat": "songs",
+          "tier": 3
+        },
+        {
+          "en": "FRIENDS",
+          "he": "חברים",
+          "heN": "חֲבֵרִים",
+          "cat": "songs",
+          "tier": 3
+        },
+        {
+          "en": "Compass",
+          "he": "מצפן",
+          "heN": "מַצְפֵּן",
+          "cat": "shop",
+          "tier": 3
         },
         {
           "en": "Lighthouse",
@@ -1936,8 +1894,267 @@ window.WORDS = {
         {
           "en": "Pagoda",
           "he": "פגודה",
-          "heN": "פִּגוֹדָה",
+          "heN": "פָּגוֹדָה",
           "cat": "shop",
+          "tier": 3
+        },
+        {
+          "en": "AND",
+          "he": "וגם",
+          "heN": "וְגַם",
+          "cat": "connectors",
+          "tier": 3
+        },
+        {
+          "en": "OR",
+          "he": "או",
+          "heN": "אוֹ",
+          "cat": "connectors",
+          "tier": 3
+        },
+        {
+          "en": "BUT",
+          "he": "אבל",
+          "heN": "אַבָּל",
+          "cat": "connectors",
+          "tier": 3
+        },
+        {
+          "en": "WITH",
+          "he": "עם",
+          "heN": "עִם",
+          "cat": "connectors",
+          "tier": 3
+        },
+        {
+          "en": "FOR",
+          "he": "עבור",
+          "heN": "עֲבוּר",
+          "cat": "connectors",
+          "tier": 3
+        },
+        {
+          "en": "WHO",
+          "he": "מי",
+          "heN": "מִי",
+          "cat": "questions",
+          "tier": 3
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "שלב 5",
+      "desc": "סופרים ומספרים",
+      "words": [
+        {
+          "en": "TWO",
+          "he": "שניים",
+          "heN": "שְׁנַיִם",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "THREE",
+          "he": "שלושה",
+          "heN": "שְׁלוֹשָׁה",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "FOUR",
+          "he": "ארבעה",
+          "heN": "אַרְבָּעָה",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "FIVE",
+          "he": "חמישה",
+          "heN": "חֲמִישָׁה",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "SIX",
+          "he": "ששה",
+          "heN": "שִׁשָּׁה",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "TEN",
+          "he": "עשרה",
+          "heN": "עֲשָׂרָה",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "HUNDRED",
+          "he": "מאה",
+          "heN": "מֵאָה",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "THOUSAND",
+          "he": "אלף",
+          "heN": "אֶלֶף",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "FIRST",
+          "he": "ראשון",
+          "heN": "רִאשׁוֹן",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "LAST",
+          "he": "אחרון",
+          "heN": "אַחֲרוֹן",
+          "cat": "numbers",
+          "tier": 1
+        },
+        {
+          "en": "MANY",
+          "he": "הרבה",
+          "heN": "הַרְבֵּה",
+          "cat": "quantity",
+          "tier": 2
+        },
+        {
+          "en": "FEW",
+          "he": "מעט",
+          "heN": "מְעַט",
+          "cat": "quantity",
+          "tier": 2
+        },
+        {
+          "en": "MORE",
+          "he": "יותר",
+          "heN": "יוֹתֵר",
+          "cat": "quantity",
+          "tier": 2
+        },
+        {
+          "en": "LESS",
+          "he": "פחות",
+          "heN": "פָּחוֹת",
+          "cat": "quantity",
+          "tier": 2
+        },
+        {
+          "en": "ALWAYS",
+          "he": "תמיד",
+          "heN": "תָּמִיד",
+          "cat": "frequency",
+          "tier": 2
+        },
+        {
+          "en": "NEVER",
+          "he": "לעולם לא",
+          "heN": "לְעוֹלָם לֹא",
+          "cat": "frequency",
+          "tier": 2
+        },
+        {
+          "en": "TODAY",
+          "he": "היום",
+          "heN": "הַיּוֹם",
+          "cat": "time",
+          "tier": 2
+        },
+        {
+          "en": "TOMORROW",
+          "he": "מחר",
+          "heN": "מָחָר",
+          "cat": "time",
+          "tier": 2
+        },
+        {
+          "en": "YESTERDAY",
+          "he": "אתמול",
+          "heN": "אֶתְמוֹל",
+          "cat": "time",
+          "tier": 2
+        },
+        {
+          "en": "WEEK",
+          "he": "שבוע",
+          "heN": "שָׁבוּעַ",
+          "cat": "time",
+          "tier": 2
+        },
+        {
+          "en": "EARLY",
+          "he": "מוקדם",
+          "heN": "מוּקְדָם",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "LATE",
+          "he": "מאוחר",
+          "heN": "מְאוּחָר",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "SOMETIMES",
+          "he": "לפעמים",
+          "heN": "לְפַעָמִים",
+          "cat": "frequency",
+          "tier": 3
+        },
+        {
+          "en": "OFTEN",
+          "he": "לעיתים",
+          "heN": "לְעֵתִים",
+          "cat": "frequency",
+          "tier": 3
+        },
+        {
+          "en": "MONTH",
+          "he": "חודש",
+          "heN": "חוֹדֶשׁ",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "YEAR",
+          "he": "שנה",
+          "heN": "שָׁנָה",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "SECOND",
+          "he": "שנייה",
+          "heN": "שְׁנִיָּה",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "MINUTE",
+          "he": "דקה",
+          "heN": "דָּקָה",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "HOUR",
+          "he": "שעה",
+          "heN": "שָׁעָה",
+          "cat": "time",
+          "tier": 3
+        },
+        {
+          "en": "HAPPY",
+          "he": "שמח",
+          "heN": "שָׂמֵחַ",
+          "cat": "emotion",
           "tier": 3
         }
       ]
