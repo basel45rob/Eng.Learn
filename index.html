@@ -114,7 +114,11 @@
             left: 50%;
             top: 20%; /* Default start pos */
             transform: translateX(-50%);
-            z-index: 4; 
+            /* v1.5k: was 4 — BEHIND the nodes (z5) and the star badges (z9/10),
+               so the character was hidden behind the stars. Bumped to 20 so the
+               warrior stands IN FRONT of the nodes + stars. pointer-events:none
+               means taps still reach the nodes underneath. */
+            z-index: 20;
             pointer-events: none;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth movement */
         }
@@ -212,9 +216,12 @@
         .map-stage-nodes { position: absolute; inset: 0; direction: ltr; }
         .map-stage-nodes .level-node-map { position: absolute; width: 54px; height: 54px; font-size: 0.95rem; transform: translate(-50%, -50%); box-shadow: 0 4px 12px rgba(0,0,0,0.45); }
         /* landscape: the map field is only ~270px tall — 54px nodes (20% of
-           the field) make the rows touch. Scale down for breathing room. */
+           the field) make the rows touch. Scale down for breathing room.
+           v2.3: 40px -> 32px so the trail can stretch to the field edges
+           (a 32px node's center only needs ~16px / ~6% of margin, vs 20px
+           for 40px) without the circles clipping off the short field. */
         @media (orientation: landscape) {
-            .map-stage-nodes .level-node-map { width: 40px; height: 40px; font-size: 0.78rem; }
+            .map-stage-nodes .level-node-map { width: 32px; height: 32px; font-size: 0.72rem; }
         }
         /* v1.3 C-fix (device QA 2026-09-26): 'available' had NO background —
            only the pulse box-shadow — so unlocked nodes rendered as invisible
@@ -250,6 +257,15 @@
         .speak-hint-btn { margin-top: 10px; border: none; border-radius: 20px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; background: linear-gradient(135deg, #ffe082, #ffb74d); color: #5d4037; cursor: pointer; box-shadow: 0 3px 8px rgba(0,0,0,0.25); touch-action: manipulation; }
         .speak-hint-btn:disabled { opacity: 0.5; cursor: default; }
         .speak-hint-btn:active { transform: scale(0.96); }
+        /* v1.5e: STT debug overlay — shows what the recognizer HEARD vs the
+           target word, so device QA can tell "empty capture" from
+           "mis-interpretation" at a glance. Toggle in settings. */
+        #stt-debug-box { position: fixed; left: 8px; right: 8px; bottom: 8px; z-index: 200; background: rgba(10,10,20,0.92); border: 1px solid #7c4dff; border-radius: 10px; padding: 8px 10px; font-size: 0.72rem; line-height: 1.5; color: #e0e0e0; direction: ltr; text-align: left; display: none; pointer-events: none; max-height: 30vh; overflow: hidden; }
+        #stt-debug-box .dbg-target { color: #ffd700; font-weight: 700; }
+        #stt-debug-box .dbg-heard { color: #80d8ff; }
+        #stt-debug-box .dbg-ok { color: #a5d6a7; font-weight: 700; }
+        #stt-debug-box .dbg-bad { color: #ef9a9a; font-weight: 700; }
+        #stt-debug-box .dbg-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         /* v1.3 Phase B: per-question time-limit bar (variant .2, settings toggle) */
         .time-limit-track { width: 100%; height: 6px; background: rgba(255,255,255,0.25); border-radius: 3px; margin-bottom: 10px; overflow: hidden; display: none; }
         .time-limit-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #ffd54f, #ff80ab); border-radius: 3px; }
@@ -476,7 +492,7 @@
     <div id="screen-map" class="screen">
         <div class="top-bar">
             <button class="nav-btn" onclick="showScreen('screen-lobby')">🔙</button>
-            <h3 style="margin:0;">מפת ההרפתקאות 🌲 <span id="map-build-badge" style="font-size:0.6rem; font-weight:normal; opacity:0.75;">v1.5</span></h3>
+            <h3 style="margin:0;">מפת ההרפתקאות 🌲 <span id="map-build-badge" style="font-size:0.6rem; font-weight:normal; opacity:0.75;">v2.5</span></h3>
         </div>
 
         <div id="map-warrior-wrapper">
@@ -547,6 +563,14 @@
                        onchange="toggleGate(this.value)" style="width:100%; margin-top:6px; accent-color:#7c4dff;">
                 <div style="text-align:center; font-weight:800; color:#7c4dff;"><span id="gate-val">7</span> מתוך 10</div>
             </label>
+            <!-- v1.5e: STT debug overlay (device QA) -->
+            <label style="display:block; margin-bottom:15px;">
+                <input type="checkbox" id="stt-debug-check" onchange="toggleSttDebug(this.checked)"> 🔍 החזר מהמיקרופון שומע (QA)
+            </label>
+            <!-- v1.5h: kill-switch for the vocabulary grammar (device QA) -->
+            <label style="display:block; margin-bottom:15px;">
+                <input type="checkbox" id="stt-grammar-check" checked onchange="toggleSttGrammar(this.checked)"> 🎙 מגביל את הזיהוי למילים מהמשחק
+            </label>
             <hr>
             <button onclick="openTtsTest()" style="background:#ede7f6; color:#4a2c6d; border:2px solid #7c4dff; padding:10px; width:100%; border-radius:10px; margin-bottom:10px;">🔊 בדיקת קול (TTS)</button>
             <button onclick="switchProfile()" style="background:#b39ddb; color:white; border:none; padding:10px; width:100%; border-radius:10px; margin-bottom:10px;">👥 החלף שחקן</button>
@@ -588,6 +612,9 @@
         <button class="action-btn btn-outline" onclick="quitToLobby()">🏠 חזור לבית</button>
     </div>
 </div>
+
+<!-- v1.5e: STT debug overlay (device QA) — shows heard vs target word -->
+<div id="stt-debug-box"></div>
 
 <div id="purchase-modal" class="success-modal" onclick="if(event.target === this) closePurchaseModal()">
     <div class="modal-box">
@@ -704,6 +731,17 @@
                     const active = document.querySelector('.screen.active');
                     const id = active ? (active.id || '').replace('screen-', '') : 'lobby';
                     if (typeof setBackground === 'function') setBackground(id || 'lobby');
+                    // v2.4 (lvl-layout): the map nodes are laid out ONLY by
+                    // renderVisualMap(), which runs when the map screen opens.
+                    // On a mid-session rotation the background above swapped to
+                    // the new orientation, but the nodes kept the OLD layout —
+                    // a portrait open + rotate = the vertical stage stack stayed
+                    // crammed in the center of a wide landscape field. Re-render
+                    // the map here so the nodes follow the new orientation
+                    // (5 horizontal columns, spread wide + tall, in landscape).
+                    if (id === 'map' && typeof window.renderVisualMap === 'function') {
+                        window.renderVisualMap();
+                    }
                 };
                 if (mq.addEventListener) mq.addEventListener('change', onChange);
                 else if (mq.addListener) mq.addListener(onChange); // older WebViews
@@ -1116,6 +1154,62 @@
     const sttActive = {};
     let sttSeq = 0;
     let sttModelState = 'loading'; // v1.1: offline Vosk model loads in background
+    // v1.5e: STT debug overlay (device QA) — shows what the recognizer HEARD
+    // vs the target word, so "empty capture" and "mis-interpretation" are
+    // distinguishable at a glance. Toggle in settings (stt-debug-check).
+    // v1.5f: ON by default for the STT diagnostic round (the owner must see
+    // the overlay without hunting for the toggle). Explicitly unchecking it
+    // in settings persists OFF.
+    const sttDebug = { on: true, lines: [] };
+    // v1.5h: vocabulary-grammar kill-switch (ON by default; per-profile).
+    let sttGrammarEnabled = true;
+    function toggleSttGrammar(on) {
+        sttGrammarEnabled = !!on;
+        if (activeProfile) { activeProfile.sttGrammar = !!on; saveProfiles(); }
+        // re-push (or clear) so the change takes effect immediately
+        (function() {
+            const b = (typeof nativeBridge === 'function') ? nativeBridge() : null;
+            if (!b || typeof b.sttSetGrammar !== 'function') return;
+            try {
+                if (!sttGrammarEnabled) { b.sttSetGrammar(''); ttsLog('🎙 STT: grammar OFF (free speech)', 'info'); dbgStt('grammar: OFF (free speech)'); return; }
+                const g = buildSttGrammarJson();
+                if (g) { b.sttSetGrammar(g); dbgStt('grammar: ON (' + JSON.parse(g).length + ' phrases)'); }
+            } catch (e) {}
+        })();
+    }
+    function sttDebugEnabled() {
+        const el = document.getElementById('stt-debug-check');
+        return sttDebug.on || !!(el && el.checked);
+    }
+    function toggleSttDebug(on) {
+        sttDebug.on = !!on;
+        if (activeProfile) { activeProfile.sttDebug = !!on; saveProfiles(); }
+        dbgSttRender();
+    }
+    function dbgStt(line, cls) {
+        if (!sttDebugEnabled()) return;
+        sttDebug.lines.push('<span class="dbg-line ' + (cls||'') + '">' + line + '</span>');
+        if (sttDebug.lines.length > 12) sttDebug.lines.shift();
+        dbgSttRender();
+    }
+    function dbgSttRender() {
+        const box = document.getElementById('stt-debug-box');
+        if (!box) return;
+        box.style.display = sttDebugEnabled() ? 'block' : 'none';
+        if (sttDebugEnabled()) {
+            box.innerHTML = (sttDebug.lines.length
+                ? sttDebug.lines.join('<br>')
+                : '<span class="dbg-line" style="opacity:0.7">🔍 STT QA: לחץ על המיקרופון בשלב .3 — כאן יופיע מה ששמעתי</span>');
+        }
+    }
+    function dbgSttVerdict(target, transcript) {
+        const t = (transcript || '').trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
+        const w = (target || '').toLowerCase();
+        const ok = !!(t && (t.includes(w) || w.includes(t)));
+        dbgStt('target: <span class="dbg-target">' + (target||'?') + '</span> · heard: <span class="dbg-heard">' +
+               (transcript ? JSON.stringify(transcript) : '<b>∅ (nothing heard)</b>') + '</span> · ' +
+               (ok ? '<span class="dbg-ok">MATCH ✓</span>' : '<span class="dbg-bad">NO MATCH ✗</span>'), '');
+    }
     window.__onNativeStt = function(event, token, payload) {
         payload = b64decode(payload); // v1.2.0 (Phase 5c/D12): base64 payload from Kotlin
         if (event === 'modelready') {
@@ -1125,6 +1219,15 @@
                 ? 'STT: מנוע זיהוי מקומי (Vosk) ✓ — ללא אינטרנט'
                 : 'STT: שגיאה בטעינת מנוע: ' + (payload || 'unknown');
             ttsLog('🎙 STT model ' + sttModelState + (payload && payload !== 'ok' ? ' (' + payload + ')' : ''), sttModelState === 'ready' ? 'ok' : 'err');
+            dbgStt('model: ' + sttModelState + (payload && payload !== 'ok' ? ' (' + payload + ')' : ''), sttModelState === 'ready' ? 'dbg-ok' : 'dbg-bad');
+            // v1.5i DEVICE QA: auto-fire one recognition when the test list is
+            // active, so the grammar path (setGrammar) runs without any tap —
+            // the result is read from logcat (crash = bad grammar).
+            const _qaActive = (STT_GRAMMAR_TEST === 'full') || (Array.isArray(STT_GRAMMAR_TEST) && STT_GRAMMAR_TEST.length);
+            if (sttModelState === 'ready' && _qaActive && typeof _nativeSttStart === 'function') {
+                ttsLog('🎙 [QA] auto-testing grammar (say "hello")...', 'info');
+                setTimeout(function() { _nativeSttStart('hello', null, null); }, 800);
+            }
             return;
         }
         if (event === 'permission') {
@@ -1156,27 +1259,49 @@
         } else if (event === 'start') {
             showListeningVisual(true);
             ttsLog('🎙 STT listening (offline)...', 'info');
+            dbgStt('▶ listening · target: <span class="dbg-target">' + a.target + '</span>');
         } else if (event === 'partial') {
             ttsLog('🎙 heard so far: "' + payload + '"', 'info');
+            dbgStt('partial: <span class="dbg-heard">' + (payload||'∅') + '</span>');
         } else if (event === 'result') {
             showListeningVisual(false);
             delete sttActive[token];
             ttsLog('🎙 heard: "' + payload + '"', 'ok');
-            processTranscript(payload, a.target, a.success, a.fail);
+            dbgSttVerdict(a.target, payload);
+            // v1.5j: the .3 speak flow's success callback re-matches the
+            // transcript ITSELF — route it straight to speakOnTranscript (same
+            // as the desktop path), NOT through processTranscript (which calls
+            // successCallback() with no argument, so the level saw undefined
+            // and rejected a correct answer even though the overlay showed
+            // MATCH ✓).
+            if (window._currentSpeakWord) {
+                const w = window._currentSpeakWord; window._currentSpeakWord = null;
+                speakOnTranscript(payload, w);
+            } else {
+                processTranscript(payload, a.target, a.success, a.fail);
+            }
         } else if (event === 'timeout') {
             // No clear end-of-speech: use whatever was heard as the answer
             showListeningVisual(false);
             delete sttActive[token];
             if (payload) {
                 ttsLog('🎙 heard (final): "' + payload + '"', 'ok');
-                processTranscript(payload, a.target, a.success, a.fail);
+                dbgSttVerdict(a.target, payload);
+                if (window._currentSpeakWord) {
+                    const w = window._currentSpeakWord; window._currentSpeakWord = null;
+                    speakOnTranscript(payload, w);
+                } else {
+                    processTranscript(payload, a.target, a.success, a.fail);
+                }
             } else {
                 ttsLog('✖ STT: nothing heard', 'err');
+                dbgSttVerdict(a.target, '');
                 handleSttFailure(a.target, a.fail, 'empty');
             }
         } else if (event === 'modelloading') {
             ttsLog('🎙 STT model still loading — try in a few seconds', 'info');
             showListeningVisual(false);
+            dbgStt('⏳ model still loading');
         } else if (event === 'nopermission') {
             showListeningVisual(false);
             delete sttActive[token];
@@ -1188,17 +1313,20 @@
             }
         } else if (event === 'busy') {
             ttsLog('🎙 already listening — wait for the result...', 'info');
+            dbgStt('⏳ busy (previous session still open)');
         } else if (event === 'stopped') {
             // v1.2.0 (Phase 5d): session ended before any result (sttStop /
             // app teardown) — treat it as "nothing heard".
             showListeningVisual(false);
             delete sttActive[token];
             ttsLog('✖ STT: stopped — nothing heard', 'err');
+            dbgStt('✖ stopped before any result (target: ' + a.target + ')');
             handleSttFailure(a.target, a.fail, 'stopped');
         } else {
             showListeningVisual(false);
             delete sttActive[token];
             ttsLog('✖ STT error: ' + payload, 'err');
+            dbgStt('✖ error: ' + (payload||'unknown') + ' (target: ' + a.target + ')');
             handleSttFailure(a.target, a.fail, payload);
         }
     };
@@ -3884,8 +4012,74 @@
     if (!WORDS || !Array.isArray(WORDS.levels) || !Array.isArray(WORDS.shop)) {
         console.error('❌ WORDS failed to load (words.js + fallback both missing/broken)');
     }
+    // v1.5g: constrain Vosk to the game vocabulary (ngram grammar). Without it
+    // the generic US-EN model hallucinates out-of-vocabulary words on the 🎤
+    // screen ("OPTIONS" heard as "hopkins"; room noise heard as "shit again").
+    // The grammar lets the recognizer output ONLY real game words, so a
+    // mis-hear can never be some random word. Built once from WORDS and pushed
+    // to the native bridge; the native side applies it to every fresh
+    // Recognizer (and falls back to free speech if the grammar is rejected).
+    // v1.5i DEVICE QA:
+    //   []      → normal (build full grammar from WORDS, no auto-test)
+    //   "full"  → build the FULL grammar AND auto-fire a test (logcat check)
+    //   [...]   → use exactly this list AND auto-fire a test (bisection aid)
+    // FORMAT (verified on-device, Vosk 0.3.34): a plain JSON array of
+    // LOWERCASE strings. NOT [["word",weight]] pairs.
+    let STT_GRAMMAR_TEST = [];
+    function buildSttGrammarJson() {
+        // v1.5h: Vosk's LIST-OF-PHRASES grammar format ([["phrase", weight], ...]).
+        // v1.5i: words are LOWERCASE — the model's vocabulary is lowercase, and
+        // uppercase words fail the word lookup with a native KaldiFatalError.
+        try {
+            let list;
+            if (Array.isArray(STT_GRAMMAR_TEST) && STT_GRAMMAR_TEST.length) {
+                list = STT_GRAMMAR_TEST;
+            } else {
+                const phrases = new Set();
+                (WORDS.levels || []).forEach(lvl => (lvl.words || []).forEach(w => {
+                    if (w && w.en) phrases.add(String(w.en).toLowerCase());
+                }));
+                (WORDS.shop || []).forEach(it => {
+                    if (it && it.en) phrases.add(String(it.en).toLowerCase());
+                });
+                ['yes', 'no', 'please', 'again', 'okay', 'ok', 'thanks'].forEach(w => phrases.add(w));
+                list = Array.from(phrases).sort();
+            }
+            if (list.length < 1) return null;
+            // v1.5i: plain array of strings (verified on-device: this Vosk wants
+            // ["word",...], NOT [["word",weight],...])
+            return JSON.stringify(list);
+        } catch (e) { return null; }
+    }
+    (function pushSttGrammar() {
+        try {
+            if (!sttGrammarEnabled) return; // v1.5h: kill-switch off
+            const b = (typeof nativeBridge === 'function') ? nativeBridge() : null;
+            if (!b || typeof b.sttSetGrammar !== 'function') return; // desktop
+            const g = buildSttGrammarJson();
+            if (!g) { ttsLog('🎙 STT: failed to build the vocabulary grammar — free speech', 'err'); return; }
+            const n = JSON.parse(g).length;
+            b.sttSetGrammar(g);
+            ttsLog('🎙 STT: vocabulary grammar active — the mic can only "hear" game words (' + n + ' phrases)', 'ok');
+            dbgStt('grammar: ON (' + n + ' game phrases — the mic can only output these)');
+        } catch (e) {}
+    })();
     const vocabularyBank = { level1: WORDS.levels[0].words, level2: WORDS.levels[1].words, level3: WORDS.levels[2].words, level4: WORDS.levels[3].words, level5: WORDS.levels[4].words };
     const shopItems = WORDS.shop;
+    // lvl-layout QOL: a shop item only appears in the shop once its word has
+    // appeared in a lesson the kid has REACHED (its stage is in unlockedLevels).
+    // Every shop item's word lives in some stage's pool (cat:"shop"), so the
+    // shop grows as the journey progresses instead of showing all 52 up front.
+    // Owned items are always shown (the "בבעלותך" state), even if the save
+    // predates the gate.
+    function shopItemUnlocked(item) {
+        if (gameState.inventory.includes(item.en)) return true;
+        const en = (item.en || '').toLowerCase();
+        return WORDS.levels.some(lvl =>
+            gameState.unlockedLevels.some(n => Math.floor(n / 10) === lvl.id) &&
+            (lvl.words || []).some(w => (w.en || '').toLowerCase() === en)
+        );
+    }
     const curriculum = WORDS.levels.map(l => ({ id: l.id, title: l.title, desc: l.desc }));
 
     // ===== v1.3 (Phase B): variant-stage engine ============================
@@ -4938,23 +5132,35 @@
     // blue-pixel detection + row-band ordering + lateral fan placement),
     // not eyeballed. Landscape is the same path remapped to the 16:9 field
     // (x compressed toward center, y compressed to the shorter field).
+    // lvl-layout (2026-09-30): the trail was redone per the owner's request —
+    // the old table traced ONE path in portrait and squeezed it into the center
+    // for landscape, so portrait looked "off" (nodes off the drawn path) and
+    // landscape was "too dense" (15 nodes crammed into x 43–59%).
+    //
+    // PORTRAIT: a full-height serpentine (stage 1 bottom → stage 5 top) that
+    // spreads vertically across the whole field (y 89→13) with a wide fan
+    // (x 30→70), independent of any theme art's exact path.
+    //
+    // LANDSCAPE (v2.5: back to the ROW layout the owner preferred — "the old
+    // layout was better, just spread it more"): stages stacked vertically
+    // (stage 1 bottom → stage 5 top), each stage's 3 variants in a row, the
+    // SAME serpentine structure as portrait but SPREAD — a wide fan
+    // (x 18→82, was 30→70) and a full-height row span (y 11→90). The
+    // v2.2–v2.4 5-column layout was rejected by the owner on device.
     const MAP_LAYOUT = {
         portrait: {
-            1: [ {x:69.7,y:94.9}, {x:52.1,y:90.5}, {x:36.6,y:87.2} ],
-            2: [ {x:42.0,y:80.7}, {x:50.2,y:76.2}, {x:61.1,y:68.3} ],
-            3: [ {x:34.5,y:66.8}, {x:44.9,y:59.1}, {x:64.6,y:56.6} ],
-            4: [ {x:69.1,y:52.4}, {x:56.8,y:46.1}, {x:38.3,y:41.9} ],
-            5: [ {x:44.5,y:37.8}, {x:56.3,y:34.4}, {x:57.2,y:30.6} ]
+            1: [ {x:30,y:89}, {x:50,y:86}, {x:70,y:84} ],
+            2: [ {x:70,y:71}, {x:50,y:68}, {x:30,y:66} ],
+            3: [ {x:30,y:53}, {x:50,y:50}, {x:70,y:48} ],
+            4: [ {x:70,y:35}, {x:50,y:32}, {x:30,y:30} ],
+            5: [ {x:30,y:17}, {x:50,y:15}, {x:70,y:13} ]
         },
-        // landscape: the traced portrait path remapped to the 16:9 field —
-        // x' = 50 + (x-50)*0.8, y compressed (88..13) so 5 rows of 40px
-        // nodes fit the ~270px-tall field without touching.
         landscape: {
-            1: [ {x:56.2,y:88.0}, {x:51.7,y:83.2}, {x:46.7,y:80.4} ],
-            2: [ {x:46.4,y:72.7}, {x:50.1,y:69.0}, {x:54.9,y:64.4} ],
-            3: [ {x:43.6,y:61.2}, {x:48.0,y:55.8}, {x:55.7,y:53.9} ],
-            4: [ {x:58.5,y:49.0}, {x:52.4,y:44.0}, {x:44.3,y:40.6} ],
-            5: [ {x:46.8,y:36.1}, {x:53.8,y:33.0}, {x:54.2,y:30.0} ]
+            1: [ {x:18,y:90}, {x:50,y:87}, {x:82,y:85} ],
+            2: [ {x:82,y:71}, {x:50,y:68}, {x:18,y:66} ],
+            3: [ {x:18,y:52}, {x:50,y:49}, {x:82,y:47} ],
+            4: [ {x:82,y:33}, {x:50,y:30}, {x:18,y:28} ],
+            5: [ {x:18,y:15}, {x:50,y:13}, {x:82,y:11} ]
         }
     };
     function mapWaypoint(stage, variant) {
@@ -4996,7 +5202,10 @@
                     // landscape rows are only ~60px apart -> push the pill
                     // further up so it sits in the gap, not on the row above
                     const off = currentOrientation() === 'landscape' ? 15 : 9;
-                    title.style.left = wpm.x + '%';
+                    // lvl-layout: keep the (wide) stage pill on-screen at the
+                    // left/right edges — the landscape columns sit near x 12/88
+                    // and an unclamped pill would clip off the field.
+                    title.style.left = Math.min(85, Math.max(15, wpm.x)) + '%';
                     title.style.top = (wpm.y - off) + '%';
                     title.style.transform = 'translate(-50%, -100%)';
                 }
@@ -5200,7 +5409,7 @@
                 const grid = document.createElement('div');
                 grid.className = 'shop-grid';
 
-                shopItems.filter(i => i.category === cat.id).forEach(item => {
+                shopItems.filter(i => i.category === cat.id && shopItemUnlocked(i)).forEach(item => {
                     const owned = gameState.inventory.includes(item.en);
 
                     let btnHtml = '';
@@ -5582,6 +5791,13 @@
         // v1.3 (Phase B): .2 time limit (default OFF)
         const tl = document.getElementById('timelimit-check');
         if(tl) tl.checked = (p.timeLimit === true);
+        // v1.5f: STT debug overlay (default ON for the diagnostic round; OFF only if explicitly unchecked)
+        const sd = document.getElementById('stt-debug-check');
+        if(sd) { sd.checked = (p.sttDebug !== false); sttDebug.on = (p.sttDebug !== false); }
+        // v1.5h: vocabulary grammar (default ON; OFF only if explicitly unchecked)
+        const sg = document.getElementById('stt-grammar-check');
+        if(sg) { sg.checked = (p.sttGrammar !== false); sttGrammarEnabled = (p.sttGrammar !== false); }
+        if (typeof dbgSttRender === 'function') dbgSttRender();
         // v1.3 Phase C: .3 gate threshold (per-profile; default from words.json)
         const gr = document.getElementById('gate-range');
         const gv = document.getElementById('gate-val');
@@ -5707,7 +5923,7 @@
         </div>
         <div id="tts-test-stt" class="tts-line info" style="margin-top:8px;">STT: ...</div>
         <div class="tts-test-btns">
-            <button onclick="ttsTestStt()">🎙 בדיקת הזיהוי (STT) — אמרו "hello world"</button>
+            <button onclick="ttsTestStt()">🎙 בדיקת הזיהוי (STT) — אמרו "hello"</button>
         </div>
         <div id="tts-test-log"></div>
         <button class="action-btn btn-outline" style="width:100%; margin-top:10px;" onclick="closeTtsTest()">סגירה</button>
@@ -5721,13 +5937,15 @@
             return;
         }
         const b = nativeBridge();
-        ttsLog('🎙 STT test: say "hello world"', 'info');
+        // v1.5g: the test word is a real game word (in the vocabulary grammar),
+        // so it can actually match — "hello world" is NOT in the grammar.
+        ttsLog('🎙 STT test: say "hello" (a game word)', 'info');
         if (typeof b.hasMicPermission === 'function' && !b.hasMicPermission()) {
-            window.__pendingSttStart = { target: 'hello world', success: null, fail: null };
+            window.__pendingSttStart = { target: 'HELLO', success: null, fail: null };
             b.requestMicPermission();
             return;
         }
-        _nativeSttStart('hello world', null, null);
+        _nativeSttStart('HELLO', null, null);
     };
 </script>
     </div>
